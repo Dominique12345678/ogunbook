@@ -1,0 +1,133 @@
+/* ===== Variables ===== */
+:root {
+  --primary: #00C9A7;
+  --secondary: #FFD166;
+  --background: #e0e0e0;
+  --text: #333;
+  --white: #ffffff;
+  --glass: rgba(255, 255, 255, 0.25);
+  --border: rgba(255, 255, 255, 0.18);
+}
+
+/* ===== Reset and Base ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Rubik', sans-serif;
+  background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  color: var(--text);
+}
+
+/* ===== Login Container ===== */
+.login-container {
+  width: 100%;
+  max-width: 400px;
+}
+
+/* ===== Glassmorphism Card ===== */
+.login-card {
+  backdrop-filter: blur(15px);
+  background: var(--glass);
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  padding: 40px 30px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+  animation: slideUp 0.7s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+/* ===== Input Group ===== */
+.input-group {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.input-group .icon {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  color: var(--primary);
+  font-size: 1rem;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px 12px 12px 38px;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+  background: #f0f0f0;
+  box-shadow: 6px 6px 12px #d1d1d1, -6px -6px 12px #ffffff;
+  font-size: 1rem;
+}
+
+/* ===== Button & Actions ===== */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.login-btn {
+  background: var(--primary);
+  color: var(--white);
+  border: none;
+  padding: 12px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.login-btn:hover {
+  background: #00a98c;
+}
+
+.forgot-password {
+  text-align: center;
+  color: var(--white);
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.forgot-password:hover {
+  opacity: 0.8;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 500px) {
+  .login-card {
+    padding: 30px 20px;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+}
