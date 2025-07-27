@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('ogunbook', function (Blueprint $table) {
-            //
+        Schema::table('utilisateurs', function (Blueprint $table) {
+            $table->timestamp('banned_at')->nullable();
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('ogunbook', function (Blueprint $table) {
-            //
+        Schema::table('utilisateurs', function (Blueprint $table) {
+            $table->dropColumn('banned_at');
         });
     }
 };

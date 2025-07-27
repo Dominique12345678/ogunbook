@@ -53,18 +53,19 @@ body, html {
 /* ===== Section 1 - Hero ===== */
 .section1 {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
+    flex-wrap: wrap; /* Permet aux éléments de passer à la ligne */
+    justify-content: center; /* Centre les éléments quand ils s'empilent */
     align-items: center;
     background: linear-gradient(to bottom, #23af20, #0f461f);
-    padding: 0;
+    padding: 2rem 1rem; /* Ajout de padding pour les petits écrans */
     position: relative;
     z-index: 1;
 }
 
 .present1 {
     flex: 1 1 50%;
-    align-self: flex-start;
+    align-self: center; /* Centre l'image verticalement */
+    min-width: 280px; /* Empêche l'image de devenir trop petite */
 }
 
 .present1 img {
@@ -72,12 +73,11 @@ body, html {
     height: auto;
     object-fit: cover;
     position: relative;
-    top: 0;
-    left: 0;
     z-index: 2;
 }
 
 .present2 {
+    flex: 1 1 400px; /* Permet au texte de prendre plus de place sur les petits écrans */
     max-width: 600px;
     margin: 1rem;
     text-align: left;
@@ -354,18 +354,54 @@ footer .social-link img:hover {
 
 
 /* ===== Responsive Design ===== */
-@media (max-width: 768px) {
-    .present2 h1,
-    .text-wrap h1,
-    .section2 h1,
+@media (max-width: 1024px) {
+    .present2 h1 {
+        font-size: 1.8rem;
+    }
+    .present2 p {
+        font-size: 1.1rem;
+    }
+    .section2 h1 {
+        font-size: 2rem;
+    }
+    .section2 p {
+        font-size: 1.1rem;
+    }
+    .text-wrap h1 {
+        font-size: 1.8rem;
+    }
+    .text-wrap p {
+        font-size: 1.1rem;
+    }
     .section5 .text {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        padding: 1rem;
+    }
+    .present1, .present2 {
+        flex: 1 1 100%; /* Empile les éléments */
+        text-align: center; /* Centre le texte */
+        padding: 0 1rem; /* Ajoute du padding horizontal */
+    }
+    .present2 {
+        margin-top: 2rem; /* Espace entre l'image et le texte */
+    }
+    .present2 h1, .present2 p {
+        text-align: center; /* S'assure que le texte est centré */
+    }
+    .present2 a {
+        margin: 0 auto; /* Centre le bouton */
+    }
+
+    .section2 h1, .section3 .text-case, .section3 .img-case, .section4 .text-wrap, .section5 .text {
         font-size: 1.5rem;
     }
 
-    .present2 p,
-    .text-wrap p,
-    .section2 p,
-    .card-price .opt2 p {
+    .section2 p, .card-price .opt2 p {
         font-size: 1rem;
     }
 
@@ -384,6 +420,9 @@ footer .social-link img:hover {
 
     .section3 {
         flex-direction: column;
+    }
+    .text-case, .img-case {
+        max-width: 100%; /* Permet aux blocs de prendre toute la largeur */
     }
 }
 
@@ -404,5 +443,25 @@ footer .social-link img:hover {
 
     .section2 {
         padding: 2rem 1rem;
+    }
+    .section1 .cta-text .btn1 {
+        font-size: 14px; /* Ajuste la taille du bouton */
+        padding: 12px 20px;
+    }
+    .box {
+        max-width: 90%; /* Les boîtes prennent plus de largeur */
+    }
+    .card-price {
+        padding: 1.5rem; /* Réduit le padding de la carte de prix */
+    }
+    footer .lien {
+        flex-direction: column; /* Empile les liens du footer */
+        align-items: center;
+    }
+    footer .lien .logo img {
+        width: 100px; /* Réduit la taille du logo dans le footer */
+    }
+    footer ul {
+        text-align: center; /* Centre les listes de liens */
     }
 }

@@ -26,7 +26,7 @@
 
     <div class="right-section">
 
-        <form method="POST" action="{{ route('loginuser') }}" class="login-container" id="loginForm">
+        <form method="POST" action="{{ route('login') }}" class="login-container" id="loginForm">
             @csrf
 
             <h2>Bienvenue</h2>

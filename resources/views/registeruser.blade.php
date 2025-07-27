@@ -30,6 +30,14 @@
 
         <h2>Créer un compte</h2>
 
+        @if ($errors->any())
+            <div style="color: red; margin-bottom: 1rem;">
+                @foreach ($errors->all() as $error)
+                    <p>{{ $error }}</p>
+                @endforeach
+            </div>
+        @endif
+
         <div class="row double">
           <div class="field">
             <label for="nom_utilisateurs">Nom</label>
@@ -109,7 +117,7 @@
           <button type="button" class="facebook"><i class="fab fa-facebook"></i> Facebook</button>
         </div>
 
-        <p class="signin-link">Vous avez déjà un compte ? <a href="{{ route('loginuser') }}">Connectez-vous</a></p>
+        <p class="signin-link">Vous avez déjà un compte ? <a href="{{ route('login') }}">Connectez-vous</a></p>
       </form>
 
     </div>

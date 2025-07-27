@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Ogunbook;
 use App\Models\Categorie;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class OgunbookController extends Controller
@@ -15,7 +15,7 @@ class OgunbookController extends Controller
      */
     public function index()
     {
-        $idCreateur = Session::get('createur_id'); // ID du créateur connecté
+        $idCreateur = Auth::guard('createur')->id(); 
         $ogunbooks = Ogunbook::where('id_createur', $idCreateur)
             ->with('categorie')
             ->get();
@@ -54,27 +54,24 @@ class OgunbookController extends Controller
 
         // Création du livre
         $ogunbook = new Ogunbook();
-        $ogunbook->nom_book = $request->nom_book;
-        $ogunbook->description = $request->description;
+        $ogunbook->titre_ogoun = $request->nom_book; // ✅ Correction ici
+        $ogunbook->description_ogoun = $request->description; // ✅ Correction ici
         $ogunbook->nombre_de_chapitre = $request->nombre_de_chapitre;
-        $ogunbook->prix_book = $request->prix_book;
+        $ogunbook->prix_ogoun = $request->prix_book; // ✅ Correction ici
         $ogunbook->id_categorie = $request->id_categorie;
-        $ogunbook->id_createur = Session::get('createur_id');
-        $ogunbook->image_book = $imagePath;
+        $ogunbook->id_createur = Auth::guard('createur')->id();
+        $ogunbook->photo_couverture_ogoun = $imagePath; // ✅ Correction ici
 
         $ogunbook->save();
 
-        return redirect()->route('ogunbook.index')->with('success', 'Livre créé avec succès !');
+        return redirect()->route('ogunbooks.index')->with('success', 'Livre créé avec succès !');
         
     }
     public function destroy($id)
-{
-    $ogunbook = Ogunbook::findOrFail($id);
-    $ogunbook->delete();
+    {
+        $ogunbook = Ogunbook::findOrFail($id);
+        $ogunbook->delete();
 
-    return redirect()->route('ogunbook.index')->with('success', 'Livre supprimé avec succès.');
-
-}
-
-
+        return redirect()->route('ogunbooks.index')->with('success', 'Livre supprimé avec succès.');
+    }
 }

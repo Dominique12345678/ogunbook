@@ -22,6 +22,12 @@ return [
             'driver' => 'session',
             'provider' => 'admins',
         ],
+
+        // ✅ Ajout du guard pour les créateurs
+        'createur' => [
+            'driver' => 'session',
+            'provider' => 'createurs',
+        ],
     ],
 
     /*
@@ -38,6 +44,12 @@ return [
         'admins' => [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
+        ],
+
+        // ✅ Ajout du provider pour les créateurs
+        'createurs' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Createur::class,
         ],
     ],
 
@@ -56,6 +68,14 @@ return [
 
         'admins' => [
             'provider' => 'admins',
+            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        // ✅ Ajout de la configuration des mots de passe pour les créateurs
+        'createurs' => [
+            'provider' => 'createurs',
             'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
             'expire' => 60,
             'throttle' => 60,

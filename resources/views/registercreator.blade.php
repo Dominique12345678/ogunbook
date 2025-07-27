@@ -20,6 +20,13 @@
 
   <header>
     <h1>Rejoignez l’univers créatif d’OgunBook</h1>
+    @if ($errors->any())
+        <div style="color: red; margin-bottom: 1rem; text-align: center;">
+            @foreach ($errors->all() as $error)
+                <p>{{ $error }}</p>
+            @endforeach
+        </div>
+    @endif
   </header>
 
   <main>

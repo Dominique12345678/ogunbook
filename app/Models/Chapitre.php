@@ -13,16 +13,16 @@ class Chapitre extends Model
     protected $fillable = [
         'nom_chapitre', 
         'image_chapitre', 
-        'fichier_chapitre', 
-        'id_book'  // Clé étrangère
+        'fichier_chapitre', // ✅ Correction ici
+        'id_ogoun'  // ✅ Correction ici
     ];
 
     /**
      * Relation vers le livre (Ogunbook)
      */
-    public function ogunbook()  // Meilleur nom pour la relation
+    public function ogunbook()
     {
-        return $this->belongsTo(Ogunbook::class, 'id_book', 'id_book');
+        return $this->belongsTo(Ogunbook::class, 'id_ogoun', 'id_ogoun'); // ✅ Correction ici
     }
     
     /**

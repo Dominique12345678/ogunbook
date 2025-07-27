@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('paiements', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('createur', function (Blueprint $table) {
+            $table->string('type_createur')->after('genre'); // Ajoute la colonne après 'genre'
         });
     }
 
@@ -22,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('paiements');
+        Schema::table('createur', function (Blueprint $table) {
+            $table->dropColumn('type_createur');
+        });
     }
 };

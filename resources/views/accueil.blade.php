@@ -16,59 +16,49 @@
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
-
-    <!-- GSAP CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 </head>
 
 <body>
 
     <header class="header">
         <nav class="navbar">
-            <ul class="sidebar">
-                <li class="closebar" onclick="hideSidebar()">
-                    <a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="26px" viewBox="0 -960 960 960" width="26px" fill="#000000"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></a>
-                </li>
-                <div class="logo">
-                    <a href="{{ url('/') }}"><img src="{{ asset('image/OG1.png') }}" alt=""></a> 
-                </div>
-                <div class="linkMobile">
-                    <li><a href="#">Accueil</a></li>
-                    <li><a href="#">Catégories</a></li>
-                    <li><a href="#">Nouveautés</a></li>
-                    <li><a href="#">Populaires</a></li>
-                </div>
-                <div class="button">
-                    <a role="button" class="ha1" href="{{ route('accueilcreator') }}">Publier</a>
-                    <a role="button" class="ha2" href="{{route ('loginuser') }}">Se connecter</a>
-                </div>
-            </ul>
-
-            <ul class="longbar">
-                <div class="logo">
-                    <a href="{{ url('/') }}"><img src="{{ asset('image/OG1.png') }}" alt=""></a>
-                </div>
-                <div class="link">
-                    <li class="hideOnMobile"><a href="#">Accueil</a></li>
-                    <li class="hideOnMobile"><a href="#">Catégories</a></li>
-                    <li class="hideOnMobile"><a href="#">Nouveautés</a></li>
-                    <li class="hideOnMobile"><a href="#">Populaires</a></li>
-                </div>
-                <div class="button" id="hideOnMobile">
-                   <a role="button" class="ha1" href="{{ route('accueilcreator') }}">Publier</a>
-                    <a role="button" class="ha2" href="{{route ('loginuser') }}">Se connecter</a>
-                </div>
-                <li class="menu-button" onclick="showSidebar()">
-                    <a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="26px" viewBox="0 -960 960 960" width="26px" fill="#000000"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg></a>
-                </li>
-            </ul>
+            <div class="logo">
+                <a href="{{ url('/') }}"><img src="{{ asset('image/OG1.png') }}" alt=""></a> 
+            </div>
+            <div class="nav-links">
+                <a href="#">Accueil</a>
+                <a href="#">Catégories</a>
+                <a href="#">Nouveautés</a>
+                <a href="#">Populaires</a>
+            </div>
+            <div class="nav-buttons">
+                <a role="button" class="ha1" href="{{ route('accueilcreator') }}">Publier</a>
+                <a role="button" class="ha2" href="{{route ('login') }}">Se connecter</a>
+            </div>
+            <div class="menu-button">
+                <svg xmlns="http://www.w3.org/2000/svg" height="26px" viewBox="0 -960 960 960" width="26px" fill="#000000"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg>
+            </div>
         </nav>
     </header>
 
-    <main class="landing">
+    <div class="sidebar">
+        <div class="closebar">
+            <svg xmlns="http://www.w3.org/2000/svg" height="26px" viewBox="0 -960 960 960" width="26px" fill="#000000"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+        </div>
+        <div class="linkMobile">
+            <a href="#">Accueil</a>
+            <a href="#">Catégories</a>
+            <a href="#">Nouveautés</a>
+            <a href="#">Populaires</a>
+        </div>
+        <div class="button">
+            <a role="button" class="ha1" href="{{ route('accueilcreator') }}">Publier</a>
+            <a role="button" class="ha2" href="{{route ('login') }}">Se connecter</a>
+        </div>
+    </div>
 
-        <section class="section1">
+    <main class="landing">
+                <section class="section1">
             <div class="cta-text">
                 <h1 class="text1">Consommer & Créer</h1>
                 <p class="textspan">
@@ -89,14 +79,14 @@
             <div class="lastbd">
                 <h2 class="text2">Explorer nos dernières sorties</h2>
                 <div class="bd">
-    @foreach($ogunbooks as $book)
+          @foreach($ogunbooks as $book)
         <a class="bd-img" href="#">
             <img src="{{ asset('storage/' . $book->image_book) }}" alt="{{ $book->nom_book }}">
         </a>
-    @endforeach
-</div>
-
+           @endforeach
             </div>
+
+        
         </section>
 
         <section class="section3">
@@ -168,58 +158,8 @@
             </div>
         </section>
 
+    
     </main>
-
-    <footer class="footer">
-        <section class="lien">
-            <div class="logo">
-                <img src="{{ asset('image/OG2.png') }}" alt="Logo OgunBook">
-            </div>
-
-            <div class="footer-links">
-                <p>Liens utiles</p>
-                <ul>
-                    <li><a href="#">Accueil</a></li>
-                    <li><a href="#">Catégories</a></li>
-                    <li><a href="#">Nouveautés</a></li>
-                    <li><a href="#">Populaires</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-links">
-                <p>OgunBook</p>
-                <ul>
-                    <li><a href="#">À propos</a></li>
-                    <li><a href="#">Aide</a></li>
-                    <li><a href="#">Contact</a></li>
-                    <li><a href="#">Conditions d'utilisation</a></li>
-                    <li><a href="#">Politique de confidentialité</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-links">
-                <p>OgunBook Créateur</p>
-                <ul>
-                    <li><a href="#">Devenir un créateur</a></li>
-                    <li><a href="#">Les créateurs</a></li>
-                </ul>
-            </div>
-        </section>
-
-        <div class="separateur"></div>
-
-        <section class="social">
-            <p>Suivez-nous</p>
-            <div class="social-link">
-                <a href="#"><img src="{{ asset('image/facebook.svg') }}" alt="Facebook"></a>
-                <a href="#"><img src="{{ asset('image/x-twitter.svg') }}" alt="Twitter/X"></a>
-                <a href="#"><img src="{{ asset('image/instagram.svg') }}" alt="Instagram"></a>
-                <a href="#"><img src="{{ asset('image/discord.svg') }}" alt="Discord"></a>
-                <a href="#"><img src="{{ asset('image/tiktok.svg') }}" alt="TikTok"></a>
-            </div>
-            <p class="bas">© 2024 OgunBook</p>
-        </section>
-    </footer>
 
     <script src="{{ asset('script/accueil.js') }}"></script>
 </body>

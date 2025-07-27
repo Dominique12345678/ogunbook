@@ -3,89 +3,72 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>@yield('title', 'Tableau de bord')</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@yield('title', 'Tableau de bord Créateur')</title>
     <link rel="stylesheet" href="{{ asset('css/creator.css') }}">
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            display: flex;
-        }
-
-        .sidebar {
-            width: 220px;
-            background-color: #2c3e50;
-            color: white;
-            height: 100vh;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .sidebar h2 {
-            color: #ecf0f1;
-            font-size: 24px;
-            margin-bottom: 30px;
-        }
-
-        .sidebar a {
-            display: block;
-            color: #ecf0f1;
-            text-decoration: none;
-            margin: 15px 0;
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-        .sidebar a:hover {
-            background-color: #34495e;
-        }
-
-        .main-content {
-            flex-grow: 1;
-            padding: 30px;
-        }
-
-        .logout-form {
-            margin-top: 30px;
-        }
-
-        .logout-form button {
-            background-color: #e74c3c;
-            color: white;
-            border: none;
-            padding: 10px;
-            width: 100%;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .logout-form button:hover {
-            background-color: #c0392b;
-        }
-    </style>
+    <!-- Font Awesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 
-    <div class="sidebar">
-        <div>
+    <button class="menu-toggle" id="menuToggle">☰</button>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-menu">
             <h2>OgunBook</h2>
-            <a href="{{ route('dashboardcreator') }}">Profil</a>
-            <a href="{{ route('ogunbook.index') }}">OgunBook</a>
-            <a href="{{ route('chapitre.index') }}">Chapitre</a>
+            <a href="{{ route('creator.dashboard') }}"><i class="fas fa-tachometer-alt"></i> Tableau de bord</a>
+            <a href="{{ route('creator.profile') }}"><i class="fas fa-user"></i> Profil</a>
+            <a href="{{ route('ogunbooks.index') }}"><i class="fas fa-book"></i> Mes OgunBooks</a>
+            <a href="{{ route('my_chapters.index') }}"><i class="fas fa-file-alt"></i> Mes Chapitres</a>
+            <!-- Nouvelle section Thème -->
+            <a href="#" id="themeToggle"><i class="fas fa-moon"></i> Thème (<span id="currentTheme">Clair</span>)</a>
         </div>
 
-        <!-- Formulaire de déconnexion -->
+        <!-- Formulaire de déconnexion en bas -->
         <form method="POST" action="{{ route('logout') }}" class="logout-form">
             @csrf
-            <button type="submit">🚪 Déconnexion</button>
+            <button type="submit">
+                <i class="fas fa-sign-out-alt"></i> Déconnexion
+            </button>
         </form>
     </div>
 
     <div class="main-content">
         @yield('content')
     </div>
+
+    <script>
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('active');
+        });
+
+        // Logique du thème
+        const themeToggle = document.getElementById('themeToggle');
+        const currentThemeSpan = document.getElementById('currentTheme');
+        const body = document.body;
+
+        // Charger le thème sauvegardé ou utiliser le thème clair par défaut
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        if (savedTheme === 'dark') {
+            body.classList.add('dark-theme');
+            currentThemeSpan.textContent = 'Sombre';
+        } else {
+            currentThemeSpan.textContent = 'Clair';
+        }
+
+        themeToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (body.classList.contains('dark-theme')) {
+                body.classList.remove('dark-theme');
+                localStorage.setItem('theme', 'light');
+                currentThemeSpan.textContent = 'Clair';
+            } else {
+                body.classList.add('dark-theme');
+                localStorage.setItem('theme', 'dark');
+                currentThemeSpan.textContent = 'Sombre';
+            }
+        });
+    </script>
 
 </body>
 </html>

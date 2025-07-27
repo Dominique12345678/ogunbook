@@ -42,6 +42,6 @@ class UtilisateurController extends Controller
             'mot_de_passe_utilisateur' => Hash::make($request->mot_de_passe_utilisateur),
         ]);
 
-        return redirect()->route('loginuser')->with('success', 'Inscription réussie. Connectez-vous.');
+        return redirect()->route('login')->with('success', 'Inscription réussie. Connectez-vous.');
     }
 }

@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('utilisateurs', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('ogunbook', function (Blueprint $table) {
+            $table->integer('nombre_de_chapitre')->default(0)->after('prix_ogoun'); // Ajoute la colonne après 'prix_ogoun'
         });
     }
 
@@ -22,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('utilisateurs');
+        Schema::table('ogunbook', function (Blueprint $table) {
+            $table->dropColumn('nombre_de_chapitre');
+        });
     }
 };

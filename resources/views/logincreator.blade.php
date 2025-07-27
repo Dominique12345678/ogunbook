@@ -20,6 +20,14 @@
     <!-- Texte de bienvenue -->
     <header class="welcome">
       <h1>Heureux de te revoir</h1>
+
+      @if ($errors->any())
+          <div style="color: red; margin-bottom: 1rem;">
+              @foreach ($errors->all() as $error)
+                  <p>{{ $error }}</p>
+              @endforeach
+          </div>
+      @endif
     </header>
 
     <!-- Formulaire de connexion -->

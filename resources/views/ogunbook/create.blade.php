@@ -15,7 +15,7 @@
         </div>
     @endif
 
-    <form action="{{ route('ogunbook.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('ogunbooks.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <label>Nom du livre :</label><br>
