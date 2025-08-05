@@ -1,3 +1,4 @@
+<!-- resources/views/chapitre/add_chapter_form.blade.php -->
 @extends('layouts.creator')
 
 @section('title', 'Ajouter un chapitre à ' . $ogunbook->titre_ogoun)
@@ -18,7 +19,8 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('my_chapters.store') }}" enctype="multipart/form-data" class="bg-white shadow-md rounded-lg p-6">
+        <!-- ✅ CORRECTION: L'action du formulaire utilise maintenant 'chapters.store' -->
+        <form method="POST" action="{{ route('chapters.store') }}" enctype="multipart/form-data" class="bg-white shadow-md rounded-lg p-6">
             @csrf
 
             <input type="hidden" name="id_book" value="{{ $ogunbook->id_ogoun }}">
@@ -42,7 +44,8 @@
                 <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                     Ajouter le chapitre
                 </button>
-                <a href="{{ route('my_chapters.index') }}" class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">
+                <!-- ✅ CORRECTION: Le lien d'annulation utilise maintenant 'chapters.index' -->
+                <a href="{{ route('chapters.index') }}" class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">
                     Annuler
                 </a>
             </div>

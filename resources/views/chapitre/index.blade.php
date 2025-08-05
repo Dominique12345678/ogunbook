@@ -1,4 +1,4 @@
-@extends('layouts.creator')
+=@extends('layouts.creator')
 
 @section('title', 'Mes chapitres')
 
@@ -7,7 +7,8 @@
 
     <!-- Bouton vers la page de création -->
     <div style="margin-bottom: 20px;">
-        <a href="{{ route('my_chapters.create') }}" style="
+        <!-- ✅ CORRECTION: my_chapters.create devient chapters.create -->
+        <a href="{{ route('chapters.create') }}" style="
             background-color: #2c3e50;
             color: white;
             padding: 10px 15px;
@@ -43,7 +44,8 @@
                 {{-- Boutons --}}
                 <div style="display: flex; gap: 10px;">
                     {{-- Bouton Modifier --}}
-                    <a href="{{ route('my_chapters.edit', $chapitre->id_chapitre) }}" style="
+                    <!-- ✅ CORRECTION: my_chapters.edit devient chapters.edit -->
+                    <a href="{{ route('chapters.edit', $chapitre->id_chapitre) }}" style="
                         background-color: #3498db;
                         color: white;
                         padding: 5px 10px;
@@ -54,7 +56,8 @@
                     </a>
 
                     {{-- Bouton Supprimer --}}
-                    <form action="{{ route('my_chapters.destroy', $chapitre->id_chapitre) }}" method="POST" onsubmit="return confirm('Supprimer ce chapitre ?')">
+                    <!-- ✅ CORRECTION: my_chapters.destroy devient chapters.destroy -->
+                    <form action="{{ route('chapters.destroy', $chapitre->id_chapitre) }}" method="POST" onsubmit="return confirm('Supprimer ce chapitre ?')">
                         @csrf
                         @method('DELETE')
                         <button type="submit" style="

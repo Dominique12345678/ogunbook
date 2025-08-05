@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $livre->nom_book }} | OgunBook</title>
+    <title>{{ $livre->titre_ogoun }} | OgunBook</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     
     <!-- CSS -->
@@ -249,12 +249,17 @@
         }
         
         .download-btn {
-            background-color: #27ae60;
+            background-color: #27ae60; /* Vert */
             color: white;
         }
         
         .download-btn:hover {
-            background-color: #219653;
+            background-color: #219653; /* Vert plus foncé */
+        }
+
+        .download-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
         }
         
         .no-chapters {
@@ -318,7 +323,7 @@
         }
         
         .download-all-btn {
-            background-color: #27ae60;
+            background-color: #27ae60; /* Vert */
             color: white;
             padding: 12px 24px;
             border: none;
@@ -332,7 +337,7 @@
         }
         
         .download-all-btn:hover {
-            background-color: #219653;
+            background-color: #219653; /* Vert plus foncé */
             transform: translateY(-2px);
         }
         
@@ -340,7 +345,7 @@
             font-size: 1.2rem;
         }
         
-        /* Popup de paiement */
+        /* Popups */
         .popup-overlay {
             display: none;
             position: fixed;
@@ -425,7 +430,7 @@
         .confirm-payment {
             width: 100%;
             padding: 1rem;
-            background-color: #e74c3c;
+            background-color: #27ae60; /* Vert */
             color: white;
             border: none;
             border-radius: 5px;
@@ -439,7 +444,7 @@
         }
         
         .confirm-payment:hover {
-            background-color: #c0392b;
+            background-color: #219653; /* Vert plus foncé */
         }
         
         /* Animation de chargement */
@@ -498,21 +503,147 @@
                 flex: 1;
             }
         }
+
+        /* Styles spécifiques au menu de userogunbook.blade.php */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -250px; /* Masqué par défaut */
+            width: 250px;
+            height: 100%;
+            background-color: #2c3e50; /* Couleur sombre pour la sidebar */
+            padding: 20px;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.2);
+            transition: right 0.3s ease-in-out;
+            z-index: 1001; /* Au-dessus des autres éléments */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .sidebar.active {
+            right: 0; /* Visible */
+        }
+
+        .sidebar .closebar {
+            align-self: flex-end; /* Bouton de fermeture à droite */
+            margin-bottom: 20px;
+        }
+
+        .sidebar .closebar a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .sidebar .logo img {
+            max-width: 100px; /* Ajustez la taille du logo */
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .sidebar .linkMobile {
+            list-style: none;
+            padding: 0;
+            width: 100%;
+        }
+
+        .sidebar .linkMobile li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar .linkMobile a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            display: block;
+            padding: 8px 0;
+            transition: color 0.3s;
+        }
+
+        .sidebar .linkMobile a:hover {
+            color: #3498db; /* Couleur de survol */
+        }
+
+        .longbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 1rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .longbar .logo img {
+            max-width: 120px;
+            height: auto;
+        }
+
+        .longbar .link {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+            padding: 0;
+        }
+
+        .longbar .link li a {
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .longbar .link li a:hover {
+            color: #3498db;
+        }
+
+        .menu-button {
+            cursor: pointer;
+            display: none; /* Masqué par défaut sur desktop */
+        }
+
+        @media (max-width: 768px) {
+            .longbar .link {
+                display: none; /* Masque les liens de la longbar sur mobile */
+            }
+            .menu-button {
+                display: block; /* Affiche le bouton menu sur mobile */
+            }
+            .longbar .logo {
+                flex-grow: 1; /* Permet au logo de prendre plus d'espace */
+                text-align: center;
+            }
+        }
     </style>
 </head>
 
 <body>
     <header class="header">
         <nav class="navbar">
-            <div class="logo">
-                <a href="{{ route('accueil') }}">
-                    <img src="{{ asset('image/OG1.png') }}" alt="OgunBook Logo">
-                </a>
-            </div>
-            <ul class="nav-links">
-                <li><a href="{{ route('accueil') }}">Accueil</a></li>
-                <li><a href="{{ route('user.accueil') }}">Bibliothèque</a></li>
-                <li><a href="{{ route('userogunbook') }}">Nouveautés</a></li>
+            <ul class="sidebar" id="sidebar">
+                <li class="closebar" onclick="hideSidebar()"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="26px" viewBox="0 -960 960 960" width="26px" fill="#FFFFFF"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></a></li>
+                <div class="logo">
+                    <a href="{{ route('accueil') }}"><img src="{{ asset('image/OG1.png') }}" alt="OgunBook Logo"></a>
+                </div>
+                <div class="linkMobile">
+                    <li><a href="{{ route('accueil') }}">Accueil</a></li>
+                    <li><a href="{{ url('/categories') }}">Catégories</a></li>
+                    <li><a href="{{ url('/nouveautes') }}">Nouveautés</a></li>
+                    <li><a href="{{ url('/populaires') }}">Populaires</a></li>
+                </div>
+            </ul>
+
+            <ul class="longbar">
+                <div class="logo">
+                    <a href="{{ route('accueil') }}"><img src="{{ asset('image/OG1.png') }}" alt="OgunBook Logo"></a>
+                </div>
+                <div class="link">
+                    <li class="hideOnMobile"><a href="{{ route('accueil') }}">Accueil</a></li>
+                    <li class="hideOnMobile"><a href="{{ url('/categories') }}">Catégories</a></li>
+                    <li class="hideOnMobile"><a href="{{ url('/nouveautes') }}">Nouveautés</a></li>
+                    <li class="hideOnMobile"><a href="{{ url('/populaires') }}">Populaires</a></li>
+                </div>
+                <li class="menu-button" onclick="showSidebar()"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="26px" viewBox="0 -960 960 960" width="26px" fill="#000000"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg></a></li>
             </ul>
         </nav>
     </header>
@@ -520,31 +651,31 @@
     <section class="book-details">
         <div class="book-container">
             <div class="book-cover">
-                <img src="{{ asset('storage/' . $livre->image_book) }}" alt="Couverture de {{ $livre->nom_book }}" class="main-cover">
+                <img src="{{ asset('storage/' . $livre->photo_couverture_ogoun) }}" alt="Couverture de {{ $livre->titre_ogoun }}" class="main-cover">
                 
                 <div class="price-tag">
-                    Prix : <span class="price-amount">{{ number_format($livre->prix_book, 0, ',', ' ') }} FCFA</span>
+                    Prix : <span class="price-amount">{{ number_format($livre->prix_ogoun, 0, ',', ' ') }} FCFA</span>
                 </div>
                 
-                @if($livre->prix_book > 0)
-                    <button class="purchase-btn" onclick="showPaymentPopup()">
+                @if($livre->prix_ogoun > 0)
+                    <button class="purchase-btn" onclick="showPaymentMethodPopup()">
                         <i class="fas fa-shopping-cart"></i> Acheter maintenant
                     </button>
                 @else
-                    <a href="{{ route('lecture.livre', $livre->id_book) }}" class="read-free-btn">
+                    <a href="{{ asset('storage/' . $livre->chapitres->first()->fichier_chapitre ?? '#') }}" class="read-free-btn" target="_blank">
                         <i class="fas fa-book-open"></i> Lire gratuitement
                     </a>
                 @endif
             </div>
             
             <div class="book-info">
-                <h1>{{ $livre->nom_book }}</h1>
+                <h1>{{ $livre->titre_ogoun }}</h1>
                 <p class="author">Par {{ $livre->createur->pseudo_createur ?? 'Auteur inconnu' }}</p>
                 <p class="category">Catégorie : {{ $livre->categorie->nom_categorie ?? 'Non classé' }}</p>
                 
                 <div class="description">
                     <h3>Description</h3>
-                    <p>{{ $livre->description ?? 'Pas de description disponible.' }}</p>
+                    <p>{{ $livre->description_ogoun ?? 'Pas de description disponible.' }}</p>
                 </div>
                 
                 <div class="stats">
@@ -559,7 +690,7 @@
         <h2><i class="fas fa-list-ul"></i> Liste des Chapitres</h2>
         
         <!-- Bouton Télécharger tout (visible seulement après paiement) -->
-        @if($livre->prix_book > 0 && (session('paiement_effectue_' . $livre->id_book) || auth()->user()?->hasPurchased($livre->id_book)))
+        @if($livre->prix_ogoun > 0 && (session('paiement_effectue_' . $livre->id_ogoun) || auth()->user()?->hasPurchased($livre->id_ogoun)))
             <div class="download-all-container">
                 <button onclick="downloadAllChapters()" class="download-all-btn">
                     <i class="fas fa-download"></i> Télécharger tous les chapitres
@@ -567,15 +698,15 @@
             </div>
         @endif
         
-        <div class="chapters-list @if($livre->prix_book > 0 && !session('paiement_effectue_' . $livre->id_book) && !auth()->user()?->hasPurchased($livre->id_book)) locked-content @endif">
+        <div class="chapters-list @if($livre->prix_ogoun > 0 && !session('paiement_effectue_' . $livre->id_ogoun) && !auth()->user()?->hasPurchased($livre->id_ogoun)) locked-content @endif">
             @forelse ($livre->chapitres as $index => $chapitre)
             <div class="chapter-card">
                 <div class="chapter-number">Chapitre {{ $index + 1 }}</div>
                 <div class="chapter-content">
                     <h3>{{ $chapitre->nom_chapitre }}</h3>
                     <div class="chapter-actions">
-                        @if($livre->prix_book > 0 && !session('paiement_effectue_' . $livre->id_book) && !auth()->user()?->hasPurchased($livre->id_book))
-                            <button class="preview-btn" onclick="showPaymentPopup()">
+                        @if($livre->prix_ogoun > 0 && !session('paiement_effectue_' . $livre->id_ogoun) && !auth()->user()?->hasPurchased($livre->id_ogoun))
+                            <button class="preview-btn" onclick="showPaymentMethodPopup()">
                                 <i class="fas fa-lock"></i> Acheter pour débloquer
                             </button>
                         @else
@@ -598,8 +729,8 @@
         </div>
         
         <!-- Overlay de verrouillage avant paiement -->
-        @if($livre->prix_book > 0 && !session('paiement_effectue_' . $livre->id_book) && !auth()->user()?->hasPurchased($livre->id_book))
-            <div class="lock-overlay" onclick="showPaymentPopup()">
+        @if($livre->prix_ogoun > 0 && !session('paiement_effectue_' . $livre->id_ogoun) && !auth()->user()?->hasPurchased($livre->id_ogoun))
+            <div class="lock-overlay" onclick="showPaymentMethodPopup()">
                 <div class="lock-message">
                     <i class="fas fa-lock fa-3x"></i>
                     <p>Achetez ce livre pour débloquer tous les chapitres</p>
@@ -611,49 +742,100 @@
         @endif
     </section>
 
-    <!-- Popup de Paiement -->
-    <div id="paymentPopup" class="popup-overlay">
+    <!-- Popup de Sélection de Méthode de Paiement -->
+    <div id="paymentMethodPopup" class="popup-overlay">
         <div class="popup-content">
-            <span class="close-btn" onclick="hidePaymentPopup()">&times;</span>
-            <h2><i class="fas fa-credit-card"></i> Paiement</h2>
-            <p>Vous allez acheter "{{ $livre->nom_book }}" pour {{ number_format($livre->prix_book, 0, ',', ' ') }} FCFA</p>
+            <span class="close-btn" onclick="hidePaymentMethodPopup()">&times;</span>
+            <h2><i class="fas fa-credit-card"></i> Choisir une méthode de paiement</h2>
+            <p>Vous allez acheter "{{ $livre->titre_ogoun }}" pour {{ number_format($livre->prix_ogoun, 0, ',', ' ') }} FCFA</p>
             
-            <form id="paymentForm">
+            <form id="methodSelectionForm">
                 @csrf
-                <input type="hidden" name="book_id" value="{{ $livre->id_book }}">
+                <input type="hidden" name="book_id" value="{{ $livre->id_ogoun }}">
                 
                 <div class="payment-methods">
                     <div class="method-option">
-                        <input type="radio" id="flooz" name="payment_method" value="flooz" checked>
-                        <label for="flooz">
+                        <input type="radio" id="flooz_method" name="payment_method_select" value="flooz" checked>
+                        <label for="flooz_method">
                             <img src="{{ asset('image/flooz.jpg') }}" alt="Flooz">
                             <span>Flooz</span>
                         </label>
                     </div>
                     
                     <div class="method-option">
-                        <input type="radio" id="tmoney" name="payment_method" value="tmoney">
-                        <label for="tmoney">
+                        <input type="radio" id="tmoney_method" name="payment_method_select" value="tmoney">
+                        <label for="tmoney_method">
                             <img src="{{ asset('image/yas.jpg') }}" alt="T-Money">
                             <span>T-Money</span>
                         </label>
                     </div>
                     
                     <div class="method-option">
-                        <input type="radio" id="visa" name="payment_method" value="visa">
-                        <label for="visa">
+                        <input type="radio" id="visa_method" name="payment_method_select" value="visa">
+                        <label for="visa_method">
                             <img src="{{ asset('image/visa.jpg') }}" alt="Visa">
                             <span>Carte Bancaire</span>
                         </label>
                     </div>
                 </div>
                 
+                <button type="button" onclick="processPaymentMethodSelection()" class="confirm-payment">
+                    <i class="fas fa-arrow-right"></i> Continuer
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Popup de Paiement par Téléphone (Flooz/T-Money) -->
+    <div id="phonePaymentPopup" class="popup-overlay">
+        <div class="popup-content">
+            <span class="close-btn" onclick="hidePhonePaymentPopup()">&times;</span>
+            <h2><i class="fas fa-mobile-alt"></i> Paiement par Téléphone</h2>
+            <p>Veuillez entrer votre numéro de téléphone pour confirmer le paiement de "{{ $livre->titre_ogoun }}".</p>
+            <form id="phonePaymentForm">
+                @csrf
+                <input type="hidden" name="book_id" value="{{ $livre->id_ogoun }}">
+                <input type="hidden" name="payment_method" id="phone_payment_method_hidden">
                 <div class="form-group">
-                    <label for="phone">Numéro de téléphone</label>
-                    <input type="tel" id="phone" name="phone" placeholder="Ex: 91234567" required>
+                    <label for="phone_number">Numéro de téléphone</label>
+                    <input type="tel" id="phone_number" name="phone" placeholder="Ex: 91234567" required>
                 </div>
-                
-                <button type="button" onclick="processPayment()" class="confirm-payment">
+                <button type="button" onclick="confirmPhonePayment()" class="confirm-payment">
+                    <i class="fas fa-check-circle"></i> Confirmer le paiement
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Popup de Paiement par Carte (Visa) -->
+    <div id="cardPaymentPopup" class="popup-overlay">
+        <div class="popup-content">
+            <span class="close-btn" onclick="hideCardPaymentPopup()">&times;</span>
+            <h2><i class="fas fa-credit-card"></i> Paiement par Carte</h2>
+            <p>Veuillez entrer vos informations de carte pour acheter "{{ $livre->titre_ogoun }}".</p>
+            <form id="cardPaymentForm">
+                @csrf
+                <input type="hidden" name="book_id" value="{{ $livre->id_ogoun }}">
+                <input type="hidden" name="payment_method" value="visa">
+                <div class="form-group">
+                    <label for="card_number">Numéro de carte</label>
+                    <input type="text" id="card_number" name="card_number" placeholder="XXXX XXXX XXXX XXXX" required>
+                </div>
+                <div class="form-group">
+                    <label for="card_name">Nom sur la carte</label>
+                    <input type="text" id="card_name" name="card_name" placeholder="Nom Prénom" required>
+                </div>
+                <div class="form-group" style="display: flex; gap: 1rem;">
+                    <div style="flex: 1;">
+                        <label for="expiry_date">Date d'expiration (MM/AA)</label>
+                        <input type="text" id="expiry_date" name="expiry_date" placeholder="MM/AA" required>
+                    </div>
+                    <div style="flex: 1;">
+                        <label for="cvc">CVC</label>
+                        <input type="text" id="cvc" name="cvc" placeholder="XXX" required>
+                    </div>
+                </div>
+                <button type="button" onclick="confirmCardPayment()" class="confirm-payment">
                     <i class="fas fa-check-circle"></i> Confirmer le paiement
                 </button>
             </form>
@@ -661,20 +843,53 @@
     </div>
 
     <script>
-        // Gestion du popup de paiement
-        function showPaymentPopup() {
-            document.getElementById('paymentPopup').style.display = 'flex';
+        // Fonctions pour le menu latéral (sidebar)
+        function showSidebar() {
+            document.getElementById('sidebar').classList.add('active');
+        }
+
+        function hideSidebar() {
+            document.getElementById('sidebar').classList.remove('active');
+        }
+
+        // Gestion des popups de paiement
+        function showPaymentMethodPopup() {
+            document.getElementById('paymentMethodPopup').style.display = 'flex';
         }
         
-        function hidePaymentPopup() {
-            document.getElementById('paymentPopup').style.display = 'none';
+        function hidePaymentMethodPopup() {
+            document.getElementById('paymentMethodPopup').style.display = 'none';
+        }
+
+        function showPhonePaymentPopup(method) {
+            document.getElementById('phone_payment_method_hidden').value = method;
+            document.getElementById('phonePaymentPopup').style.display = 'flex';
+        }
+
+        function hidePhonePaymentPopup() {
+            document.getElementById('phonePaymentPopup').style.display = 'none';
+        }
+
+        function showCardPaymentPopup() {
+            document.getElementById('cardPaymentPopup').style.display = 'flex';
+        }
+
+        function hideCardPaymentPopup() {
+            document.getElementById('cardPaymentPopup').style.display = 'none';
         }
         
-        // Fermer le popup si on clique en dehors
+        // Fermer les popups si on clique en dehors
         window.onclick = function(event) {
-            const popup = document.getElementById('paymentPopup');
-            if (event.target === popup) {
-                popup.style.display = 'none';
+            const methodPopup = document.getElementById('paymentMethodPopup');
+            const phonePopup = document.getElementById('phonePaymentPopup');
+            const cardPopup = document.getElementById('cardPaymentPopup');
+
+            if (event.target === methodPopup) {
+                hidePaymentMethodPopup();
+            } else if (event.target === phonePopup) {
+                hidePhonePaymentPopup();
+            } else if (event.target === cardPopup) {
+                hideCardPaymentPopup();
             }
         }
         
@@ -685,56 +900,125 @@
             @endforeach
         }
         
-        // Simulation de paiement TOUJURS réussie
-        function processPayment() {
-            const form = document.getElementById('paymentForm');
-            const submitBtn = document.querySelector('.confirm-payment');
-            
-            // Afficher un loader
+        // Logique de sélection de la méthode de paiement
+        function processPaymentMethodSelection() {
+            const selectedMethod = document.querySelector('input[name="payment_method_select"]:checked').value;
+            hidePaymentMethodPopup(); // Cacher le popup de sélection
+
+            if (selectedMethod === 'flooz' || selectedMethod === 'tmoney') {
+                showPhonePaymentPopup(selectedMethod);
+            } else if (selectedMethod === 'visa') {
+                showCardPaymentPopup();
+            }
+        }
+
+        // Fonction pour confirmer le paiement par téléphone (Flooz/T-Money)
+        function confirmPhonePayment() {
+            const form = document.getElementById('phonePaymentForm');
+            const submitBtn = form.querySelector('.confirm-payment');
+            const phoneNumber = document.getElementById('phone_number').value;
+            const paymentMethod = document.getElementById('phone_payment_method_hidden').value;
+
+            if (!phoneNumber) {
+                alert('Veuillez entrer un numéro de téléphone.');
+                return;
+            }
+
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Traitement...';
             submitBtn.disabled = true;
 
-            // Simulation d'un paiement réussi après 1.5 secondes
-            setTimeout(() => {
-                // Créer un objet FormData pour récupérer les valeurs
-                const formData = new FormData(form);
-                const paymentData = {
-                    book_id: formData.get('book_id'),
-                    payment_method: formData.get('payment_method'),
-                    phone: formData.get('phone')
-                };
+            const paymentData = {
+                book_id: form.querySelector('input[name="book_id"]').value,
+                payment_method: paymentMethod,
+                phone: phoneNumber
+            };
 
-                // Envoyer la requête de simulation au serveur
-                fetch("{{ route('paiement.simulate') }}", {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(paymentData)
-                })
-                .then(response => {
-                    if (!response.ok) throw new Error('Erreur réseau');
-                    return response.json();
-                })
-                .then(data => {
-                    hidePaymentPopup();
-                    alert('Paiement simulé avec succès ! Les chapitres sont maintenant disponibles.');
-                    window.location.reload();
-                })
-                .catch(error => {
-                    console.error('Erreur:', error);
-                    // En cas d'erreur, on simule quand même le succès pour le développement
-                    hidePaymentPopup();
-                    alert('Paiement simulé avec succès ! (Mode développement)');
-                    window.location.reload();
-                })
-                .finally(() => {
-                    submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Confirmer le paiement';
-                    submitBtn.disabled = false;
-                });
-            }, 1500);
+            // Envoyer la requête de simulation au serveur
+            fetch("{{ route('paiement.simulate') }}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(paymentData)
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Erreur réseau');
+                return response.json();
+            })
+            .then(data => {
+                hidePhonePaymentPopup();
+                alert('Paiement simulé avec succès par ' + paymentMethod.toUpperCase() + ' ! Les chapitres sont maintenant disponibles.');
+                window.location.reload();
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                hidePhonePaymentPopup();
+                alert('Paiement simulé avec succès ! (Mode développement)');
+                window.location.reload();
+            })
+            .finally(() => {
+                submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Confirmer le paiement';
+                submitBtn.disabled = false;
+            });
+        }
+
+        // Fonction pour confirmer le paiement par carte (Visa)
+        function confirmCardPayment() {
+            const form = document.getElementById('cardPaymentForm');
+            const submitBtn = form.querySelector('.confirm-payment');
+            const cardNumber = document.getElementById('card_number').value;
+            const cardName = document.getElementById('card_name').value;
+            const expiryDate = document.getElementById('expiry_date').value;
+            const cvc = document.getElementById('cvc').value;
+
+            if (!cardNumber || !cardName || !expiryDate || !cvc) {
+                alert('Veuillez remplir toutes les informations de la carte.');
+                return;
+            }
+
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Traitement...';
+            submitBtn.disabled = true;
+
+            const paymentData = {
+                book_id: form.querySelector('input[name="book_id"]').value,
+                payment_method: 'visa',
+                card_number: cardNumber,
+                card_name: cardName,
+                expiry_date: expiryDate,
+                cvc: cvc
+            };
+
+            // Envoyer la requête de simulation au serveur
+            fetch("{{ route('paiement.simulate') }}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(paymentData)
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Erreur réseau');
+                return response.json();
+            })
+            .then(data => {
+                hideCardPaymentPopup();
+                alert('Paiement simulé avec succès par Carte Bancaire ! Les chapitres sont maintenant disponibles.');
+                window.location.reload();
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                hideCardPaymentPopup();
+                alert('Paiement simulé avec succès ! (Mode développement)');
+                window.location.reload();
+            })
+            .finally(() => {
+                submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Confirmer le paiement';
+                submitBtn.disabled = false;
+            });
         }
     </script>
 </body>

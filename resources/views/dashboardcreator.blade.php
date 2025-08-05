@@ -25,13 +25,15 @@
                 <a href="{{ route('ogunbooks.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded text-center">
                     <i class="fas fa-plus-circle"></i> Créer un nouvel Ogunbook
                 </a>
-                <a href="{{ route('my_chapters.create') }}" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded text-center">
+                <!-- ✅ CORRECTION: my_chapters.create devient chapters.create -->
+                <a href="{{ route('chapters.create') }}" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded text-center">
                     <i class="fas fa-plus-square"></i> Ajouter un chapitre
                 </a>
                 <a href="{{ route('ogunbooks.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-3 px-4 rounded text-center">
                     <i class="fas fa-book-open"></i> Gérer mes Ogunbooks
                 </a>
-                <a href="{{ route('my_chapters.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-3 px-4 rounded text-center">
+                <!-- ✅ CORRECTION: my_chapters.index devient chapters.index -->
+                <a href="{{ route('chapters.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-3 px-4 rounded text-center">
                     <i class="fas fa-list"></i> Gérer mes Chapitres
                 </a>
             </div>

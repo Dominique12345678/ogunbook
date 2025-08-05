@@ -19,7 +19,8 @@
             <a href="{{ route('creator.dashboard') }}"><i class="fas fa-tachometer-alt"></i> Tableau de bord</a>
             <a href="{{ route('creator.profile') }}"><i class="fas fa-user"></i> Profil</a>
             <a href="{{ route('ogunbooks.index') }}"><i class="fas fa-book"></i> Mes OgunBooks</a>
-            <a href="{{ route('my_chapters.index') }}"><i class="fas fa-file-alt"></i> Mes Chapitres</a>
+            <!-- ✅ CORRECTION: my_chapters.index devient chapters.index -->
+            <a href="{{ route('chapters.index') }}"><i class="fas fa-file-alt"></i> Mes Chapitres</a>
             <!-- Nouvelle section Thème -->
             <a href="#" id="themeToggle"><i class="fas fa-moon"></i> Thème (<span id="currentTheme">Clair</span>)</a>
         </div>

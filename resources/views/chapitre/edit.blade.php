@@ -15,7 +15,8 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('my_chapters.update', $chapitre->id_chapitre) }}" enctype="multipart/form-data" style="margin-top: 20px;">
+    <!-- ✅ CORRECTION: L'action du formulaire utilise maintenant 'chapters.update' -->
+    <form method="POST" action="{{ route('chapters.update', $chapitre->id_chapitre) }}" enctype="multipart/form-data" style="margin-top: 20px;">
         @csrf
         @method('PUT')
 

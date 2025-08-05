@@ -4,7 +4,7 @@ return [
 
     'defaults' => [
         'guard' => env('AUTH_GUARD', 'web'),
-        'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
+        'passwords' => env('AUTH_PASSWORD_BROKER', 'utilisateurs'), // Assurez-vous que c'est 'utilisateurs' ou 'web' si c'est le défaut
     ],
 
     /*
@@ -15,7 +15,7 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'utilisateurs', // Le provider par défaut pour les utilisateurs
         ],
 
         'admin' => [
@@ -23,10 +23,10 @@ return [
             'provider' => 'admins',
         ],
 
-        // ✅ Ajout du guard pour les créateurs
+        // ✅ Vérifiez cette section pour les créateurs
         'createur' => [
             'driver' => 'session',
-            'provider' => 'createurs',
+            'provider' => 'createurs', // Doit pointer vers le provider 'createurs'
         ],
     ],
 
@@ -36,9 +36,9 @@ return [
     |--------------------------------------------------------------------------
     */
     'providers' => [
-        'users' => [
+        'utilisateurs' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class),
+            'model' => App\Models\Utilisateur::class,
         ],
 
         'admins' => [
@@ -46,10 +46,10 @@ return [
             'model' => App\Models\Admin::class,
         ],
 
-        // ✅ Ajout du provider pour les créateurs
+        // ✅ Vérifiez cette section pour les créateurs
         'createurs' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Createur::class,
+            'model' => App\Models\Createur::class, // Doit pointer vers votre modèle Createur
         ],
     ],
 
@@ -59,8 +59,8 @@ return [
     |--------------------------------------------------------------------------
     */
     'passwords' => [
-        'users' => [
-            'provider' => 'users',
+        'utilisateurs' => [
+            'provider' => 'utilisateurs',
             'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
             'expire' => 60,
             'throttle' => 60,
@@ -73,7 +73,7 @@ return [
             'throttle' => 60,
         ],
 
-        // ✅ Ajout de la configuration des mots de passe pour les créateurs
+        // ✅ Vérifiez cette section pour les créateurs
         'createurs' => [
             'provider' => 'createurs',
             'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),

@@ -64,9 +64,10 @@
             <label for="genre_utilisateur">Genre</label>
             <select id="genre_utilisateur" name="genre_utilisateur" required>
               <option value="">-- Sélectionnez --</option>
-              <option value="homme" {{ old('genre_utilisateur') == 'homme' ? 'selected' : '' }}>Homme</option>
-              <option value="femme" {{ old('genre_utilisateur') == 'femme' ? 'selected' : '' }}>Femme</option>
-              <option value="nepaspreciser" {{ old('genre_utilisateur') == 'nepaspreciser' ? 'selected' : '' }}>Ne pas préciser</option>
+              <!-- Les valeurs ont été corrigées pour correspondre à la migration ENUM -->
+              <option value="Homme" {{ old('genre_utilisateur') == 'Homme' ? 'selected' : '' }}>Homme</option>
+              <option value="Femme" {{ old('genre_utilisateur') == 'Femme' ? 'selected' : '' }}>Femme</option>
+              <option value="Ne pas préciser" {{ old('genre_utilisateur') == 'Ne pas préciser' ? 'selected' : '' }}>Ne pas préciser</option>
             </select>
           </div>
         </div>

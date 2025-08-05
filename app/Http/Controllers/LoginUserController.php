@@ -4,31 +4,39 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Utilisateur;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User; // Utiliser le modèle User qui est configuré pour la table utilisateurs
 
 class LoginUserController extends Controller
 {
+    /**
+     * Affiche le tableau de bord pour les utilisateurs connectés.
+     */
     public function index()
     {
-        // Cette méthode semble être pour une page d'accueil utilisateur, pas directement liée à la connexion.
-        // Je suppose que 'userogunbook' est la vue principale après connexion.
-        // Assurez-vous que l'utilisateur est authentifié via le guard 'web'
-        if (!Auth::guard('web')->check()) {
+        // ✅ CORRECTION: Utilise la méthode Auth::check() pour vérifier la connexion.
+        // C'est la méthode standard de Laravel.
+        if (!Auth::check()) {
             return redirect()->route('login')->withErrors(['auth' => 'Veuillez vous connecter.']);
         }
 
-        // Récupérer les ogunbooks si nécessaire pour cette vue
-        // use App\Models\Ogunbook; // Assurez-vous d'importer Ogunbook si vous l'utilisez ici
-        // $ogunbooks = Ogunbook::latest()->take(12)->get();
-        return view('userogunbook'); // ou view('userogunbook', compact('ogunbooks')); si vous les utilisez
+        // TODO: Vérifiez que le modèle Ogunbook est bien importé.
+        // use App\Models\Ogunbook;
+        $ogunbooks = Ogunbook::latest()->take(12)->get();
+        return view('userogunbook', compact('ogunbooks'));
     }
 
+    /**
+     * Affiche le formulaire de connexion.
+     */
     public function showLoginForm()
     {
         return view('loginuser');
     }
 
+    /**
+     * Gère la tentative de connexion de l'utilisateur.
+     */
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -36,28 +44,38 @@ class LoginUserController extends Controller
             'password' => 'required|string',
         ]);
 
-        // Utilisation de Auth::attempt() pour authentifier l'utilisateur
-        // Laravel va automatiquement vérifier le hachage du mot de passe
-        // et gérer la session si les identifiants sont corrects.
-        // Le guard 'web' est le guard par défaut pour le modèle User.
-        if (Auth::guard('web')->attempt(['email_utilisateur' => $request->email, 'password' => $request->password], $request->remember)) {
-            $request->session()->regenerate(); // Régénère la session pour éviter les attaques de fixation de session
-
-            return redirect()->intended(route('user.accueil')); // Redirige vers la page prévue ou user.accueil par défaut
+        // ✅ CORRECTION: Utilise Auth::attempt() pour authentifier l'utilisateur.
+        // On spécifie que le champ d'email dans la base de données est 'email_utilisateur'.
+        // La méthode Auth::attempt gère la vérification du mot de passe et l'initialisation de la session pour vous.
+        if (Auth::attempt([
+            'email_utilisateur' => $credentials['email'],
+            'password' => $credentials['password']
+        ])) {
+            // La connexion a réussi.
+            // La session est automatiquement gérée par Laravel.
+            $request->session()->regenerate();
+            
+            // Redirige l'utilisateur vers la route prévue ou la route de fallback.
+            return redirect()->intended(route('userogunbook'));
         }
 
-        // Si l'authentification échoue
+        // Si la connexion a échoué.
         return back()->withErrors([
-            'email' => 'Les identifiants fournis ne correspondent pas à nos enregistrements.',
-        ])->withInput($request->only('email')); // Garde l'email dans le champ du formulaire
+            'email' => 'Email ou mot de passe incorrect.',
+        ])->onlyInput('email');
     }
 
-    // Vous pourriez avoir une méthode logout ici si elle n'est pas déjà dans les routes
-    // public function logout(Request $request)
-    // {
-    //     Auth::guard('web')->logout();
-    //     $request->session()->invalidate();
-    //     $request->session()->regenerateToken();
-    //     return redirect('/');
-    // }
+    /**
+     * Déconnecte l'utilisateur.
+     */
+    public function logout(Request $request)
+    {
+        // Ajout d'une méthode pour la déconnexion.
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login'); // Redirige vers la page de connexion
+    }
 }

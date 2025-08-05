@@ -23,7 +23,7 @@
     <header class="header">
         <nav class="navbar">
             <div class="logo">
-                <a href="{{ url('/') }}"><img src="{{ asset('image/OG1.png') }}" alt=""></a> 
+                <a href="{{ url('/') }}"><img src="{{ asset('image/OG1.png') }}" alt=""></a>
             </div>
             <div class="nav-links">
                 <a href="#">Accueil</a>
@@ -58,7 +58,7 @@
     </div>
 
     <main class="landing">
-                <section class="section1">
+        <section class="section1">
             <div class="cta-text">
                 <h1 class="text1">Consommer & Créer</h1>
                 <p class="textspan">
@@ -80,13 +80,13 @@
                 <h2 class="text2">Explorer nos dernières sorties</h2>
                 <div class="bd">
           @foreach($ogunbooks as $book)
-        <a class="bd-img" href="#">
-            <img src="{{ asset('storage/' . $book->image_book) }}" alt="{{ $book->nom_book }}">
-        </a>
-           @endforeach
-            </div>
+            <a class="bd-img" href="{{ route('user.livre.show', ['id' => $book->id_ogoun]) }}">
+                <img src="{{ asset('storage/' . $book->image_book) }}" alt="{{ $book->nom_book }}">
+            </a>
+          @endforeach
+                </div>
 
-        
+
         </section>
 
         <section class="section3">
@@ -121,7 +121,7 @@
                         <p class="textspan">
                             Rejoignez les créateurs, partagez vos histoires et inspirez une communauté de lecteurs.
                         </p>
-                        <a href="#" class="btn2">Créer</a>
+                        <a href="#">Créer</a>
                     </div>
                 </div>
             </div>
@@ -158,7 +158,7 @@
             </div>
         </section>
 
-    
+
     </main>
 
     <script src="{{ asset('script/accueil.js') }}"></script>

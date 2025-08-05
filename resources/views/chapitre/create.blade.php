@@ -30,7 +30,8 @@
                         @endif
                         <h2 class="text-xl font-semibold mb-2">{{ $book->titre_ogoun }}</h2>
                         <p class="text-gray-600 text-sm mb-4">{{ Str::limit($book->description_ogoun, 100) }}</p>
-                        <a href="{{ route('my_chapters.add_to_book', $book->id_ogoun) }}" class="mt-auto bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                        <!-- ✅ CORRECTION: my_chapters.add_to_book devient chapters.add_to_book -->
+                        <a href="{{ route('chapters.add_to_book', $book->id_ogoun) }}" class="mt-auto bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
                             Ajouter un chapitre
                         </a>
                     </div>
