@@ -3,16 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-
-/*
-|--------------------------------------------------------------------------
-| Contrôleurs
-|--------------------------------------------------------------------------
-*/
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminCreatorController;
+use App\Http\Controllers\Admin\AdminOgunbookController;
 use App\Http\Controllers\ChapitreController;
 use App\Http\Controllers\CreateurController;
 use App\Http\Controllers\HomeController;
@@ -22,7 +17,7 @@ use App\Http\Controllers\PaiementController;
 use App\Http\Controllers\UserLivreController;
 use App\Http\Controllers\UserOgunbookController;
 use App\Http\Controllers\UtilisateurController;
-
+use App\Http\Controllers\GoogleAuthController;
 /*
 |--------------------------------------------------------------------------
 | Routes Publiques
@@ -32,33 +27,36 @@ Route::get('/', [HomeController::class, 'index'])->name('accueil');
 Route::get('/a-propos', function () { return view('a-propos'); })->name('a-propos');
 Route::get('/contact', function () { return view('contact'); })->name('contact');
 Route::get('/faq', function () { return view('faq'); })->name('faq');
+
 Route::get('/accueilcreator', function () {
     return view('accueilcreator');
 })->name('accueilcreator');
 
 /*
 |--------------------------------------------------------------------------
-| Routes d'Authentification (Utilisateurs, Créateurs, Admins)
+| Routes d'Authentification
 |--------------------------------------------------------------------------
 */
 // Utilisateurs
 Route::get('/register', [UtilisateurController::class, 'create'])->name('registeruser');
 Route::post('/register', [UtilisateurController::class, 'store'])->name('registeruser.store');
 Route::get('/login', [LoginUserController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [LoginUserController::class, 'login']);
+Route::post('/login', [LoginUserController::class, 'login'])->name('login.store');
 
 // Créateurs
 Route::get('/register-creator', [CreateurController::class, 'create'])->name('registercreator');
 Route::post('/register-creator', [CreateurController::class, 'store'])->name('registercreator.store');
 Route::get('/login-creator', [CreateurController::class, 'showLoginForm'])->name('logincreator');
-Route::post('/login-creator', [CreateurController::class, 'login'])->name('logincreator.post');
+Route::post('/login-creator', [CreateurController::class, 'login'])->name('creator.login');
 
 // Admin
 Route::get('/login-admin', [AdminAuthController::class, 'showLoginForm'])->name('loginadmin');
 Route::post('/login-admin', [AdminAuthController::class, 'login'])->name('admin.login');
-// La route de déconnexion est maintenant en dehors du groupe protégé.
-Route::get('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 
+// Routes Google Auth - Corrigé
+Route::get('auth/google/{role}', [GoogleAuthController::class, 'redirectToGoogle'])->name('auth.google.redirect');
+Route::get('auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback']);
 
 /*
 |--------------------------------------------------------------------------
@@ -87,8 +85,22 @@ Route::middleware(['auth:createur'])->prefix('creator')->name('creator.')->group
     Route::get('/profile', [CreateurController::class, 'showProfile'])->name('profile');
     Route::get('/profile/edit', [CreateurController::class, 'editProfile'])->name('profile.edit');
     Route::put('/profile', [CreateurController::class, 'updateProfile'])->name('profile.update');
-});
 
+    // Routes pour les Ogunbooks (utilisées par les créateurs)
+    Route::resource('ogunbooks', OgunbookController::class);
+
+    // Routes pour les chapitres (utilisées par les créateurs)
+    Route::prefix('chapters')->name('chapters.')->group(function () {
+        Route::get('/', [ChapitreController::class, 'index'])->name('index');
+        Route::get('/new', [ChapitreController::class, 'create'])->name('create');
+        Route::post('/', [ChapitreController::class, 'store'])->name('store');
+        Route::get('/{ogunbook}/add', [ChapitreController::class, 'showAddChapterForm'])->name('add_to_book');
+        Route::get('/{chapitre}', [ChapitreController::class, 'show'])->name('show');
+        Route::get('/{chapitre}/edit', [ChapitreController::class, 'edit'])->name('edit');
+        Route::put('/{chapitre}', [ChapitreController::class, 'update'])->name('update');
+        Route::delete('/{chapitre}', [ChapitreController::class, 'destroy'])->name('destroy');
+    });
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -109,35 +121,27 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
     // Bannissement d'utilisateurs
     Route::post('/users/{user}/ban', [AdminUserController::class, 'ban'])->name('users.ban');
     Route::post('/users/{user}/unban', [AdminUserController::class, 'unban'])->name('users.unban');
-});
 
-/*
-|--------------------------------------------------------------------------
-| Routes pour la Gestion des Ogunbooks & Chapitres (Admins & Créateurs)
-| Ces routes sont accessibles aux deux rôles.
-|--------------------------------------------------------------------------
-*/
-Route::middleware(['auth:admin,createur'])->group(function () {
-    // Routes pour les Ogunbooks
-    Route::resource('ogunbooks', OgunbookController::class);
+    // Routes pour la gestion des Ogunbooks par l'administrateur
+    Route::resource('ogunbooks', AdminOgunbookController::class);
 
-    // Routes pour les chapitres
+    // Routes pour les chapitres, maintenant sous le préfixe 'admin.'
     Route::prefix('chapters')->name('chapters.')->group(function () {
         Route::get('/', [ChapitreController::class, 'index'])->name('index');
         Route::get('/new', [ChapitreController::class, 'create'])->name('create');
         Route::post('/', [ChapitreController::class, 'store'])->name('store');
-        Route::get('/{ogunbook}/add', [ChapitreController::class, 'showAddChapterForm'])->name('add_to_book');
         Route::get('/{chapitre}', [ChapitreController::class, 'show'])->name('show');
         Route::get('/{chapitre}/edit', [ChapitreController::class, 'edit'])->name('edit');
         Route::put('/{chapitre}', [ChapitreController::class, 'update'])->name('update');
         Route::delete('/{chapitre}', [ChapitreController::class, 'destroy'])->name('destroy');
+        
+        
     });
 });
 
-
 /*
 |--------------------------------------------------------------------------
-| Autres Routes
+| Autres Routes (Hors groupes d'authentification spécifiques)
 |--------------------------------------------------------------------------
 */
 Route::get('/livre/{id}', [ChapitreController::class, 'showLivre'])->name('livre.show');
@@ -157,5 +161,13 @@ Route::post('/paiement/webhook', [PaiementController::class, 'handleWebhook']);
 
 // Route de test temporaire
 Route::get('/test-route', function () {
+    return 'La route de test fonctionne !';
+});
+
+// Route de test pour l'authentification Google
+Route::get('/test-google', function () {
+    return view('test-google');
+});
+Route::get('auth/google/test', function () {
     return 'La route de test fonctionne !';
 });

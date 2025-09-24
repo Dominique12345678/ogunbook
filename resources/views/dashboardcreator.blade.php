@@ -22,18 +22,20 @@
         <div class="bg-white shadow-md rounded-lg p-6">
             <h2 class="text-2xl font-semibold mb-4">Actions Rapides</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <a href="{{ route('ogunbooks.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded text-center">
+                <!-- CORRECTION: ogunbooks.create devient creator.ogunbooks.create -->
+                <a href="{{ route('creator.ogunbooks.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded text-center">
                     <i class="fas fa-plus-circle"></i> Créer un nouvel Ogunbook
                 </a>
-                <!-- ✅ CORRECTION: my_chapters.create devient chapters.create -->
-                <a href="{{ route('chapters.create') }}" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded text-center">
+                <!-- ✅ CORRECTION: chapters.create devient creator.chapters.create -->
+                <a href="{{ route('creator.chapters.create') }}" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded text-center">
                     <i class="fas fa-plus-square"></i> Ajouter un chapitre
                 </a>
-                <a href="{{ route('ogunbooks.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-3 px-4 rounded text-center">
+                <!-- CORRECTION: ogunbooks.index devient creator.ogunbooks.index -->
+                <a href="{{ route('creator.ogunbooks.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-3 px-4 rounded text-center">
                     <i class="fas fa-book-open"></i> Gérer mes Ogunbooks
                 </a>
-                <!-- ✅ CORRECTION: my_chapters.index devient chapters.index -->
-                <a href="{{ route('chapters.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-3 px-4 rounded text-center">
+                <!-- ✅ CORRECTION: chapters.index devient creator.chapters.index -->
+                <a href="{{ route('creator.chapters.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-3 px-4 rounded text-center">
                     <i class="fas fa-list"></i> Gérer mes Chapitres
                 </a>
             </div>

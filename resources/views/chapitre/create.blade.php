@@ -1,42 +1,53 @@
-@extends('layouts.creator')
+*@extends('layouts.creator')
 
 @section('title', 'Ajouter un chapitre')
 
 @section('content')
-    <div class="container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold mb-6">Sélectionnez un Ogunbook pour ajouter un chapitre</h1>
+    {{-- Le conteneur principal est déjà géré par la classe .main-content de votre layout --}}
+    
+    <h1 class="page-title">
+        Sélectionnez un livre pour ajouter un chapitre
+    </h1>
 
-        @if (session('success'))
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
-                <span class="block sm:inline">{{ session('success') }}</span>
-            </div>
-        @endif
+    @if (session('success'))
+        <div class="alert-success" role="alert">
+            <span>{{ session('success') }}</span>
+        </div>
+    @endif
 
-        @if ($ogunbooks->isEmpty())
-            <p class="text-gray-600">Vous n'avez pas encore créé d'Ogunbook. Veuillez en créer un d'abord pour pouvoir ajouter des chapitres.</p>
-            <a href="{{ route('ogunbooks.create') }}" class="mt-4 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+    @if ($ogunbooks->isEmpty())
+        <div class="empty-state">
+            <svg class="empty-state-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+            </svg>
+            <h3 class="empty-state-title">Aucun Ogunbook trouvé</h3>
+            <p class="empty-state-text">Vous n'avez pas encore créé de livre. Commencez par en créer un.</p>
+            <a href="{{ route('ogunbooks.create') }}" class="btn-create-book">
                 Créer un Ogunbook
             </a>
-        @else
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                @foreach ($ogunbooks as $book)
-                    <div class="bg-white shadow-md rounded-lg p-6 flex flex-col items-center text-center">
-                        @if ($book->photo_couverture_ogoun)
-                            <img src="{{ asset('storage/' . $book->photo_couverture_ogoun) }}" alt="{{ $book->titre_ogoun }}" class="w-32 h-48 object-cover rounded-md mb-4">
-                        @else
-                            <div class="w-32 h-48 bg-gray-200 flex items-center justify-center rounded-md mb-4">
-                                <span class="text-gray-500 text-sm">Pas d'image</span>
-                            </div>
-                        @endif
-                        <h2 class="text-xl font-semibold mb-2">{{ $book->titre_ogoun }}</h2>
-                        <p class="text-gray-600 text-sm mb-4">{{ Str::limit($book->description_ogoun, 100) }}</p>
-                        <!-- ✅ CORRECTION: my_chapters.add_to_book devient chapters.add_to_book -->
-                        <a href="{{ route('chapters.add_to_book', $book->id_ogoun) }}" class="mt-auto bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                            Ajouter un chapitre
-                        </a>
-                    </div>
-                @endforeach
-            </div>
-        @endif
-    </div>
+        </div>
+    @else
+        <div class="book-grid">
+            @foreach ($ogunbooks as $book)
+                <div class="book-card">
+                    
+                    @if ($book->photo_couverture_ogoun)
+                        <img src="{{ asset('storage/' . $book->photo_couverture_ogoun) }}" alt="Couverture de {{ $book->titre_ogoun }}" class="book-cover">
+                    @else
+                        <div class="book-cover-placeholder">
+                            <span>Aucune image</span>
+                        </div>
+                    @endif
+                    
+                    <h2 class="book-title">{{ $book->titre_ogoun }}</h2>
+                    <p class="book-description">{{ Str::limit($book->description_ogoun, 80) }}</p>
+                    
+                    <a href="{{ route('creator.chapters.add_to_book', $book->id_ogoun) }}" class="btn-add-chapter">
+                        Ajouter un chapitre
+                    </a>
+                </div>
+            @endforeach
+        </div>
+    @endif
+    
 @endsection

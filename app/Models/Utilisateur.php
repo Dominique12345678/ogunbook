@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Models\Paiement; // Assurez-vous d'importer le modèle Paiement
 
 class Utilisateur extends Authenticatable
 {
@@ -12,6 +11,7 @@ class Utilisateur extends Authenticatable
 
     protected $table = 'utilisateurs';
     protected $primaryKey = 'id_utilisateur';
+    public $timestamps = true;
 
     protected $fillable = [
         'nom_utilisateurs',
@@ -21,39 +21,17 @@ class Utilisateur extends Authenticatable
         'genre_utilisateur',
         'date_de_naissance_utilisateur',
         'email_utilisateur',
+        'google_id_utilisateur',
         'mot_de_passe_utilisateur',
     ];
 
     protected $hidden = [
         'mot_de_passe_utilisateur',
-        'remember_token', //Vous pouvez l'ajouter si vous utilisez la fonctionnalité "se souvenir de moi"//
     ];
 
-    public $timestamps = true;
-
-    /**
-     * Get the password for the user.
-     *
-     * @return string
-     */
-    public function getAuthPassword(): string
+    // ⚠️ Laravel attend "password", donc on mappe
+    public function getAuthPassword()
     {
         return $this->mot_de_passe_utilisateur;
-    }
-
-    /**
-     * Vérifie si l'utilisateur a acheté un livre spécifique.
-     *
-     * @param int $bookId L'ID de l'Ogunbook à vérifier.
-     * @return bool
-     */
-    public function hasPurchased(int $bookId): bool
-    {
-        // Vérifie si un enregistrement de paiement existe pour cet utilisateur et ce livre,
-        // avec un statut 'effectue' ou 'terminé' (ajustez selon vos statuts réels).
-        return Paiement::where('user_id', $this->id_utilisateur)
-                       ->where('book_id', $bookId)
-                       ->where('statut', 'effectue') // Ou 'terminé', 'completed', etc.
-                       ->exists();
     }
 }

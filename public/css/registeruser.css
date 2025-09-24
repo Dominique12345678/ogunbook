@@ -1,6 +1,5 @@
-/* === style.css === */
+/* === registeruser.css - Copie conforme de style1.css === */
 
-/* Import Comic-style font */
 @import url('https://fonts.googleapis.com/css2?family=Bangers&display=swap');
 
 * {
@@ -11,7 +10,6 @@
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  /* color: #f0f0f0; */
   overflow: hidden;
 }
 
@@ -94,7 +92,6 @@ input, select {
   background: #383838;
   color: #fff;
   transition: border-color 0.3s ease;
-  /* width: 100%; */
 }
 
 input:focus, select:focus {
@@ -174,11 +171,11 @@ input:focus, select:focus {
   gap: 0.5rem;
 }
 
-.checkbox input[type="checkbox"]{
+.checkbox input[type="checkbox"] {
   align-self: center;
 }
 
-.checkbox p{
+.checkbox p {
   font-size: 0.85rem;
   color: white;
 }
@@ -188,7 +185,7 @@ input:focus, select:focus {
   text-decoration: none;
 }
 
-.checkbox a:hover{
+.checkbox a:hover {
   color: var(--darkgreen);
   text-decoration: underline;
 }
@@ -235,7 +232,8 @@ input:focus, select:focus {
   justify-content: center;
 }
 
-.social-buttons button {
+.social-buttons button,
+.social-buttons a {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -246,11 +244,10 @@ input:focus, select:focus {
   font-weight: bold;
 }
 
-.google{
+.google {
   background: #fff;
   color: #000;
 }
-
 
 .facebook {
   background: #4267B2;
@@ -270,13 +267,12 @@ input:focus, select:focus {
   text-decoration: none;
 }
 
-.signin-link a:hover{
+.signin-link a:hover {
   color: var(--lightgreen);
   text-decoration: underline;
 }
 
 /*-------------- MEDIA QUERIES -----------------*/
-/* Tablette (écran moyen) */
 @media (max-width: 992px) {
   .left-panel img {
     max-width: 70%;
@@ -295,7 +291,7 @@ input:focus, select:focus {
   input[type="date"],
   input[type="tel"],
   input[type="password"],
-  select{
+  select {
     width: 100%;
   }
 
@@ -320,7 +316,6 @@ input:focus, select:focus {
   }
 }
 
-/* Mobile / Smartphone */
 @media (max-width: 768px) {
   .container {
     flex-direction: column;
@@ -357,7 +352,7 @@ input:focus, select:focus {
     font-size: 1.8rem;
   }
 
-  .google{
+  .google {
     color: #000;
     border-color: #666;
   }
@@ -366,12 +361,13 @@ input:focus, select:focus {
     flex-direction: column;
     gap: 0.5rem;
   }
-  .signin-link{
-    color: #000;
-  }
-  .checkbox p{
-    font-size: 0.85rem;
+
+  .signin-link {
     color: #000;
   }
 
+  .checkbox p {
+    font-size: 0.85rem;
+    color: #000;
+  }
 }

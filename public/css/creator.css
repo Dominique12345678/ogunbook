@@ -1,106 +1,144 @@
+/* ==========================================================================
+   1. Variables de Couleur (Thèmes Clair & Sombre)
+   ========================================================================== */
 :root {
+    /* Couleurs de base */
     --darkgreen: #0F461F;
     --lightgreen: #23AF20;
+    --lightgreen-hover: #1a8c18; /* Couleur pour le survol */
     --black: #000000;
     --white: #ffffff;
-    --gray-bg: #f4f7f6; /* Couleur de fond pour le contenu principal */
+    --red: #e74c3c;
+    --blue: #3498db;
+
+    /* == Thème Clair (par défaut) == */
+    --bg-primary: #f4f7f6;      /* Fond principal */
+    --bg-secondary: #ffffff;    /* Fond des cartes, conteneurs, tables */
+    --bg-sidebar: var(--darkgreen);
+    --text-primary: #333333;      /* Texte principal */
+    --text-secondary: var(--white); /* Texte sur fonds sombres (sidebar) */
+    --border-color: #dddddd;
+    --shadow-color: rgba(0, 0, 0, 0.05);
 }
 
+body.dark-theme {
+    /* == Thème Sombre == */
+    --bg-primary: #121212;
+    --bg-secondary: #1e1e1e;
+    --bg-sidebar: #1f2937; /* Un gris sombre pour le thème sombre */
+    --text-primary: #e0e0e0;
+    --text-secondary: #ffffff;
+    --border-color: #444444;
+    --shadow-color: rgba(0, 0, 0, 0.2);
+}
+
+
+/* ==========================================================================
+   2. Styles de Base et Layout
+   ========================================================================== */
 body {
     margin: 0;
     font-family: 'Arial', sans-serif;
     display: flex;
     min-height: 100vh;
-    background-color: var(--gray-bg); /* Appliquer la couleur de fond ici */
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Sidebar */
 .sidebar {
-    width: 250px; /* Largeur légèrement augmentée */
-    background-color: var(--darkgreen); /* Vert foncé pour la sidebar */
-    color: var(--white);
+    width: 250px;
+    flex-shrink: 0; /* Empêche la sidebar de rétrécir */
+    background-color: var(--bg-sidebar);
+    color: var(--text-secondary);
     height: 100vh;
     padding: 20px;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* Aligner les éléments en haut */
-    position: sticky;
+    position: fixed;
     top: 0;
     left: 0;
-    transition: transform 0.3s ease-in-out; /* Pour l'animation du menu mobile */
-    z-index: 100; /* Assurer que la sidebar est au-dessus du contenu */
+    transition: left 0.3s ease-in-out; /* Pour l'animation mobile */
+    z-index: 1000;
 }
 
-.sidebar .logout-form {
-    margin-bottom: 20px; /* Espace sous le bouton de déconnexion */
+.main-content {
+    flex-grow: 1;
+    padding: 30px;
+    margin-left: 250px; /* Espace pour la sidebar */
+    background-color: var(--bg-primary);
 }
 
-.sidebar .logout-form button {
-    background-color: var(--lightgreen); /* Vert clair pour le bouton de déconnexion */
-    color: var(--white);
-    border: none;
-    padding: 10px 15px;
-    width: 100%;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    transition: background-color 0.3s ease;
-}
 
-.sidebar .logout-form button:hover {
-    background-color: darken(var(--lightgreen), 10%); /* Assombrir au survol */
-}
-
-.sidebar .sidebar-menu {
-    flex-grow: 1; /* Permet au menu de prendre l'espace restant */
-}
-
+/* ==========================================================================
+   3. Composants de la Sidebar (AVEC BOUTON DÉCONNEXION INTÉGRÉ)
+   ========================================================================== */
 .sidebar h2 {
-    color: var(--white);
-    font-size: 28px; /* Taille de police plus grande */
+    color: var(--text-secondary);
+    font-size: 28px;
     margin-bottom: 30px;
     text-align: center;
 }
 
-.sidebar a {
-    display: flex; /* Pour aligner icône et texte */
+.sidebar .sidebar-menu {
+    flex-grow: 1;
+}
+
+/* Style commun pour les liens ET le bouton de déconnexion */
+.sidebar .sidebar-menu a,
+.sidebar .sidebar-menu .logout-form button {
+    display: flex;
     align-items: center;
-    gap: 10px; /* Espace entre icône et texte */
-    color: var(--white);
+    gap: 10px;
+    color: var(--text-secondary);
     text-decoration: none;
     margin: 10px 0;
-    padding: 12px 15px; /* Plus de padding */
+    padding: 12px 15px;
     border-radius: 5px;
-    font-size: 1.1rem; /* Taille de police légèrement plus grande */
+    font-size: 1.1rem;
     transition: background-color 0.3s ease, color 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.sidebar a:hover {
-    background-color: var(--lightgreen); /* Vert clair au survol */
-    color: var(--black); /* Texte noir au survol */
+/* Styles spécifiques pour que le bouton se comporte comme un lien */
+.sidebar .sidebar-menu .logout-form {
+    margin: 0; /* Retire les marges par défaut du formulaire */
 }
 
-.sidebar a i {
-    font-size: 1.2rem; /* Taille des icônes */
+.sidebar .sidebar-menu .logout-form button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left; /* Aligne le texte à gauche comme les autres liens */
+    font-family: inherit; /* Utilise la même police que le reste de la page */
 }
 
-/* Main Content */
-.main-content {
-    flex-grow: 1;
-    padding: 30px;
-    background-color: var(--gray-bg); /* Couleur de fond du contenu principal */
+/* Effet de survol commun */
+.sidebar .sidebar-menu a:hover,
+.sidebar .sidebar-menu .logout-form button:hover {
+    background-color: var(--lightgreen);
+    color: var(--black);
 }
 
-/* Styles généraux pour les pages du créateur */
+/* Style commun pour les icônes */
+.sidebar a i,
+.sidebar .logout-form button i {
+    font-size: 1.2rem;
+}
+
+
+/* ==========================================================================
+   4. Styles du Contenu Principal (Cartes, Formulaires, Tableaux)
+   ========================================================================== */
+
+/* Conteneur générique */
 .container {
-    background-color: var(--white);
+    background-color: var(--bg-secondary);
     padding: 25px;
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 10px var(--shadow-color);
+    border: 1px solid var(--border-color);
 }
 
 h1 {
@@ -108,28 +146,27 @@ h1 {
     margin-bottom: 20px;
 }
 
-/* Styles pour les formulaires */
+body.dark-theme h1 {
+    color: var(--lightgreen);
+}
+
+/* Formulaires */
 form label {
-    color: var(--darkgreen);
+    color: var(--text-primary);
     font-weight: bold;
     margin-bottom: 5px;
 }
 
-form input[type="text"],
-form input[type="email"],
-form input[type="password"],
-form input[type="date"],
-form input[type="number"],
-form input[type="file"],
-form select,
-form textarea {
+form input, form select, form textarea {
     width: 100%;
     padding: 10px;
     margin-top: 5px;
     margin-bottom: 15px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
     border-radius: 4px;
     box-sizing: border-box;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
 }
 
 form button[type="submit"] {
@@ -144,30 +181,10 @@ form button[type="submit"] {
 }
 
 form button[type="submit"]:hover {
-    background-color: darken(var(--lightgreen), 10%);
+    background-color: var(--lightgreen-hover);
 }
 
-/* Messages de succès/erreur */
-.bg-green-100 { background-color: #d4edda; }
-.border-green-400 { border-color: #28a745; }
-.text-green-700 { color: #155724; }
-.bg-red-100 { background-color: #f8d7da; }
-.border-red-400 { border-color: #dc3545; }
-.text-red-700 { color: #721c24; }
-.px-4 { padding-left: 1rem; padding-right: 1rem; }
-.py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
-.rounded { border-radius: 0.25rem; }
-.relative { position: relative; }
-.mb-4 { margin-bottom: 1rem; }
-.block { display: block; }
-.sm\:inline { display: inline; }
-.font-bold { font-weight: bold; }
-.mt-3 { margin-top: 0.75rem; }
-.list-disc { list-style-type: disc; }
-.list-inside { list-style-position: inside; }
-
-
-/* Tableau de bord - Statistiques */
+/* Cartes de statistiques */
 .dashboard-stats {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -176,17 +193,19 @@ form button[type="submit"]:hover {
 }
 
 .stat-card {
-    background-color: var(--darkgreen); /* Vert foncé pour les cartes de stats */
-    color: var(--white);
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
     padding: 20px;
     border-radius: 8px;
     text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px var(--shadow-color);
+    border: 1px solid var(--border-color);
 }
 
 .stat-card h3 {
     font-size: 1.2rem;
     margin-bottom: 10px;
+    color: var(--lightgreen);
 }
 
 .stat-card p {
@@ -194,257 +213,249 @@ form button[type="submit"]:hover {
     font-weight: bold;
 }
 
-/* Styles pour les tableaux (Mes Ogunbooks, Mes Chapitres) */
+/* Tableaux */
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
-    background-color: var(--white);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    background-color: var(--bg-secondary);
+    box-shadow: 0 4px 10px var(--shadow-color);
     border-radius: 8px;
-    overflow: hidden; /* Pour que les coins arrondis s'appliquent */
+    overflow: hidden;
 }
 
 table th, table td {
     padding: 12px 15px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--border-color);
 }
 
 table th {
-    background-color: var(--lightgreen); /* Vert clair pour les en-têtes de tableau */
+    background-color: var(--lightgreen);
     color: var(--white);
     font-weight: bold;
-    text-transform: uppercase;
-    font-size: 0.9rem;
-}
-
-table tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
 }
 
 table tbody tr:hover {
-    background-color: #f1f1f1;
-}
-
-table td img {
-    border-radius: 4px;
+    background-color: rgba(35, 175, 32, 0.1); /* Surlignage vert clair transparent */
 }
 
 /* Boutons d'action dans les tableaux */
-table .action-buttons a,
-table .action-buttons button {
-    display: inline-block;
-    padding: 6px 12px;
-    border-radius: 4px;
-    text-decoration: none;
-    font-size: 0.85rem;
-    margin-right: 5px;
-    transition: background-color 0.3s ease;
-}
+.action-buttons .edit-btn { background-color: var(--blue); color: white; }
+.action-buttons .delete-btn { background-color: var(--red); color: white; border: none; cursor: pointer; }
 
-table .action-buttons .edit-btn {
-    background-color: #3498db; /* Bleu */
-    color: white;
-}
 
-table .action-buttons .edit-btn:hover {
-    background-color: darken(#3498db, 10%);
-}
+/* ==========================================================================
+   5. Menu Mobile et Responsive Design
+   ========================================================================== */
 
-table .action-buttons .delete-btn {
-    background-color: #e74c3c; /* Rouge */
-    color: white;
-    border: none;
+/* Bouton "Hamburger" pour le menu mobile */
+.menu-toggle {
+    display: none; /* Caché par défaut sur grand écran */
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1001;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    padding: 8px 12px;
     cursor: pointer;
-}
-
-table .action-buttons .delete-btn:hover {
-    background-color: darken(#e74c3c, 10%);
-}
-
-
-/* Styles pour la sélection d'Ogunbook sur la page de création de chapitre */
-.ogunbook-selection-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-}
-
-.ogunbook-card {
-    background-color: var(--white);
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 15px;
-    text-align: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.ogunbook-card img {
-    max-width: 100%;
-    height: 200px; /* Hauteur fixe pour les images */
-    object-fit: cover;
-    border-radius: 4px;
-    margin-bottom: 10px;
-}
-
-.ogunbook-card h3 {
-    color: var(--darkgreen);
-    font-size: 1.1rem;
-    margin-bottom: 10px;
-}
-
-.ogunbook-card .add-chapter-btn {
-    background-color: var(--lightgreen);
-    color: var(--white);
-    padding: 8px 15px;
+    font-size: 24px;
     border-radius: 5px;
-    text-decoration: none;
-    margin-top: auto; /* Pousse le bouton vers le bas */
-    transition: background-color 0.3s ease;
 }
 
-.ogunbook-card .add-chapter-btn:hover {
-    background-color: darken(var(--lightgreen), 10%);
-}
-
-
-/* Responsive Design */
+/* Styles pour écrans de moins de 768px */
 @media (max-width: 768px) {
-    body {
-        flex-direction: column;
+    .menu-toggle {
+        display: block; /* Afficher le bouton */
     }
 
     .sidebar {
-        width: 100%;
-        height: auto;
-        position: static;
-        padding: 10px 20px;
-        flex-direction: row;
-        justify-content: space-around;
-        flex-wrap: wrap;
-        transform: translateX(-100%); /* Caché par défaut */
+        left: -260px; /* Caché en dehors de l'écran */
     }
 
     .sidebar.active {
-        transform: translateX(0); /* Affiché quand actif */
-    }
-
-    .sidebar .logout-form {
-        order: -1; /* Place le bouton de déconnexion en premier sur mobile */
-        width: 100%;
-        margin-bottom: 10px;
-    }
-
-    .sidebar .logout-form button {
-        width: auto;
-        padding: 8px 12px;
-        font-size: 0.9rem;
-    }
-
-    .sidebar h2 {
-        display: none; /* Cache le titre sur mobile */
-    }
-
-    .sidebar .sidebar-menu {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-    }
-
-    .sidebar a {
-        margin: 5px 0;
-        padding: 8px 12px;
-        font-size: 1rem;
-        justify-content: center; /* Centre le texte et l'icône */
+        left: 0; /* Affiche la sidebar */
     }
 
     .main-content {
-        padding: 15px;
+        margin-left: 0; /* Le contenu prend toute la largeur */
+        padding: 20px;
     }
 
-    .menu-toggle {
+    /* Styles pour les tableaux sur mobile */
+    table thead {
+        display: none; /* Cacher les en-têtes */
+    }
+    table, table tbody, table tr, table td {
         display: block;
-        position: fixed;
-        top: 10px;
-        left: 10px;
-        z-index: 101; /* Au-dessus de la sidebar */
-        background-color: var(--darkgreen);
-        color: var(--white);
-        border: none;
-        padding: 10px 15px;
-        cursor: pointer;
-        font-size: 24px;
-        border-radius: 5px;
+        width: 100%;
     }
-
-    .dashboard-stats {
-        grid-template-columns: 1fr; /* Une seule colonne sur mobile */
-    }
-
-    table, table tbody, table thead, table tr, table th, table td {
-        display: block;
-    }
-
-    table thead tr {
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
-    }
-
     table tr {
-        border: 1px solid #ddd;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
+        border: 1px solid var(--border-color);
         border-radius: 8px;
     }
-
     table td {
-        border: none;
-        border-bottom: 1px solid #eee;
-        position: relative;
+        text-align: right; /* Aligne le contenu à droite */
         padding-left: 50%;
-        text-align: right;
+        position: relative;
     }
-
-    table td:before {
+    table td::before {
+        content: attr(data-label); /* Utilise un attribut pour le label */
         position: absolute;
-        top: 6px;
-        left: 6px;
+        left: 15px;
         width: 45%;
-        padding-right: 10px;
-        white-space: nowrap;
         text-align: left;
         font-weight: bold;
     }
-
-    table td:nth-of-type(1):before { content: "Image"; }
-    table td:nth-of-type(2):before { content: "Titre"; }
-    table td:nth-of-type(3):before { content: "Description"; }
-    table td:nth-of-type(4):before { content: "Chapitres"; }
-    table td:nth-of-type(5):before { content: "Prix"; }
-    table td:nth-of-type(6):before { content: "Catégorie"; }
-    table td:nth-of-type(7):before { content: "Actions"; }
-
-    table .action-buttons {
-        display: flex;
-        justify-content: flex-end;
-        margin-top: 10px;
-    }
 }
 
-@media (max-width: 480px) {
-    .sidebar a {
-        font-size: 0.9rem;
-        padding: 6px 10px;
-    }
-    .logout-form button {
-        font-size: 0.9rem;
-        padding: 6px 10px;
-    }
-    .ogunbook-selection-grid {
-        grid-template-columns: 1fr;
-    }
+/* ==========================================================================
+   6. Styles Spécifiques - Page "Sélectionner un Livre"
+   ========================================================================== */
+
+.page-title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 30px;
+}
+
+/* Grille des Livres */
+.book-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+/* Carte de Livre */
+.book-card {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 4px 8px var(--shadow-color);
+    transition: all 0.3s ease-in-out;
+}
+
+.book-card:hover {
+    box-shadow: 0 6px 12px var(--shadow-color);
+    transform: translateY(-5px);
+}
+
+.book-cover {
+    width: 96px;  /* 6rem */
+    height: 144px; /* 9rem */
+    object-fit: cover;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+}
+
+.book-cover-placeholder {
+    width: 96px;
+    height: 144px;
+    background-color: var(--bg-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    border: 1px dashed var(--border-color);
+    color: var(--text-primary);
+    font-size: 0.8rem;
+    text-align: center;
+    padding: 5px;
+}
+
+.book-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.book-description {
+    color: var(--text-primary);
+    opacity: 0.8;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    flex-grow: 1; /* Pour pousser le bouton vers le bas */
+}
+
+.btn-add-chapter {
+    margin-top: auto;
+    background-color: var(--lightgreen);
+    color: var(--white);
+    font-weight: bold;
+    padding: 8px 16px;
+    border-radius: 20px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out, background-color 0.2s;
+}
+
+.btn-add-chapter:hover {
+    background-color: var(--lightgreen-hover);
+    transform: scale(1.05);
+}
+
+/* Alerte de Succès */
+.alert-success {
+    background-color: rgba(35, 175, 32, 0.1);
+    border-left: 4px solid var(--lightgreen);
+    color: var(--text-primary);
+    padding: 12px 15px;
+    border-radius: 5px;
+    margin-bottom: 25px;
+}
+
+/* Styles pour la vue "Aucun livre" */
+.empty-state {
+    text-align: center;
+    background-color: var(--bg-secondary);
+    padding: 30px;
+    border-radius: 8px;
+    border: 1px dashed var(--border-color);
+    margin-top: 40px;
+}
+.empty-state-title {
+    margin-top: 10px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+.empty-state-text {
+    margin-top: 5px;
+    font-size: 1rem;
+    color: var(--text-primary);
+    opacity: 0.7;
+}
+.empty-state-icon {
+    margin: 0 auto;
+    height: 48px;
+    width: 48px;
+    color: var(--text-primary);
+    opacity: 0.5;
+}
+.btn-create-book {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 5px;
+    color: var(--white);
+    background-color: var(--blue);
+    text-decoration: none;
+    margin-top: 20px;
+    transition: background-color 0.2s;
+}
+.btn-create-book:hover {
+    opacity: 0.9;
 }

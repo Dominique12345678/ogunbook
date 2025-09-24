@@ -13,19 +13,18 @@
 
     <button class="menu-toggle" id="menuToggle">☰</button>
 
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-menu">
-            <h2>OgunBook</h2>
-            <a href="{{ route('creator.dashboard') }}"><i class="fas fa-tachometer-alt"></i> Tableau de bord</a>
-            <a href="{{ route('creator.profile') }}"><i class="fas fa-user"></i> Profil</a>
-            <a href="{{ route('ogunbooks.index') }}"><i class="fas fa-book"></i> Mes OgunBooks</a>
-            <!-- ✅ CORRECTION: my_chapters.index devient chapters.index -->
-            <a href="{{ route('chapters.index') }}"><i class="fas fa-file-alt"></i> Mes Chapitres</a>
-            <!-- Nouvelle section Thème -->
-            <a href="#" id="themeToggle"><i class="fas fa-moon"></i> Thème (<span id="currentTheme">Clair</span>)</a>
-        </div>
+<!-- resources/views/layouts/creator.blade.php -->
 
-        <!-- Formulaire de déconnexion en bas -->
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-menu">
+        <h2>OgunBook</h2>
+        <a href="{{ route('creator.dashboard') }}"><i class="fas fa-tachometer-alt"></i> Tableau de bord</a>
+        <a href="{{ route('creator.profile') }}"><i class="fas fa-user"></i> Profil</a>
+        <a href="{{ route('creator.ogunbooks.index') }}"><i class="fas fa-book"></i> Mes OgunBooks</a>
+        <a href="{{ route('creator.chapters.index') }}"><i class="fas fa-file-alt"></i> Mes Chapitres</a>
+        <a href="#" id="themeToggle"><i class="fas fa-moon"></i> Thème (<span id="currentTheme">Clair</span>)</a>
+
+        <!-- ✅ DÉCONNEXION INTÉGRÉE AU MENU -->
         <form method="POST" action="{{ route('logout') }}" class="logout-form">
             @csrf
             <button type="submit">
@@ -34,42 +33,42 @@
         </form>
     </div>
 
-    <div class="main-content">
-        @yield('content')
-    </div>
+    <!-- Le formulaire n'est plus en bas, il a été déplacé dans .sidebar-menu -->
+</div>
 
-    <script>
-        document.getElementById('menuToggle').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.toggle('active');
-        });
+<div class="main-content">
+    @yield('content')
+</div>
 
-        // Logique du thème
-        const themeToggle = document.getElementById('themeToggle');
-        const currentThemeSpan = document.getElementById('currentTheme');
-        const body = document.body;
+<script>
+    document.getElementById('menuToggle').addEventListener('click', function() {
+        document.getElementById('sidebar').classList.toggle('active');
+    });
 
-        // Charger le thème sauvegardé ou utiliser le thème clair par défaut
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        if (savedTheme === 'dark') {
-            body.classList.add('dark-theme');
-            currentThemeSpan.textContent = 'Sombre';
-        } else {
+    // Logique du thème
+    const themeToggle = document.getElementById('themeToggle');
+    const currentThemeSpan = document.getElementById('currentTheme');
+    const body = document.body;
+
+    // Charger le thème sauvegardé ou utiliser le thème clair par défaut
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    if (savedTheme === 'dark') {
+        body.classList.add('dark-theme');
+        currentThemeSpan.textContent = 'Sombre';
+    } else {
+        currentThemeSpan.textContent = 'Clair';
+    }
+
+    themeToggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (body.classList.contains('dark-theme')) {
+            body.classList.remove('dark-theme');
+            localStorage.setItem('theme', 'light');
             currentThemeSpan.textContent = 'Clair';
+        } else {
+            body.classList.add('dark-theme');
+            localStorage.setItem('theme', 'dark');
+            currentThemeSpan.textContent = 'Sombre';
         }
-
-        themeToggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            if (body.classList.contains('dark-theme')) {
-                body.classList.remove('dark-theme');
-                localStorage.setItem('theme', 'light');
-                currentThemeSpan.textContent = 'Clair';
-            } else {
-                body.classList.add('dark-theme');
-                localStorage.setItem('theme', 'dark');
-                currentThemeSpan.textContent = 'Sombre';
-            }
-        });
-    </script>
-
-</body>
-</html>
+    });
+</script>

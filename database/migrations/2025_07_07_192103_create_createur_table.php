@@ -20,6 +20,7 @@ return new class extends Migration
         $table->enum('genre', ['Homme', 'Femme', 'Ne pas préciser'])->default('Ne pas préciser');
         $table->string('email_createur')->unique();
         $table->string('num_tel_createur')->nullable();
+        $table->string('google_id')->nullable();
         $table->string('mot_de_passe_createur');
         $table->timestamps();
     });

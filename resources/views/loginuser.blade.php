@@ -14,8 +14,8 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
-    <!-- CDN Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
+
+    *
 </head>
 
 <body>
@@ -25,7 +25,6 @@
     </div>
 
     <div class="right-section">
-
         <form method="POST" action="{{ route('login') }}" class="login-container" id="loginForm">
             @csrf
 
@@ -48,7 +47,7 @@
             <div class="input-group">
                 <label for="password">Mot de passe</label>
                 <input type="password" id="password" name="password" class="input-style" autocomplete="off" required>
-                <img src="{{ asset('image/eyeoff-icon.svg') }}" alt="eyeoff" class="eye-icon" id="togglePassword" role="button" tabindex="0"> 
+                <img src="{{ asset('image/eyeoff-icon.svg') }}" alt="eyeoff" class="eye-icon" id="togglePassword" role="button" tabindex="0">
             </div>
 
             <div class="link-text" style="text-align: right; margin-bottom: 1rem;">
@@ -67,16 +66,13 @@
             <div class="separator">ou</div>
 
             <div class="social-buttons">
-                <button type="button">
+                <!-- Lien Google corrigé -->
+               <a href="{{ route('auth.google.redirect', ['role' => 'user']) }}" class="btn btn-google">
+    <i class="fab fa-google"></i> Se connecter avec Google
+</a>
+                <button type="button" class="social-button">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="24px" height="24px">
-                        <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303..."/>
-                        <!-- (raccourci pour lisibilité, laisse ton SVG complet ici) -->
-                    </svg>
-                    Google
-                </button>
-                <button type="button">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="24px" height="24px">
-                        <path fill="#039be5" d="M24 5A19 19 0 1 0 24 43A19 19..."/>
+                        <path fill="#039be5" d="M24 5A19 19 0 1 0 24 43A19 19 0 1 0 24 5Z"/><path fill="#fff" d="M26.572,29.036h4.917l0.772-4.995h-5.69v-2.73c0-2.075,0.678-3.915,2.619-3.915h3.119v-4.359c-0.548-0.074-1.707-0.236-3.897-0.236c-4.573,0-7.254,2.415-7.254,7.917v3.323h-4.701v4.995h4.701v13.729C22.089,42.905,23.032,43,24,43c0.875,0,1.729-0.08,2.572-0.194V29.036z"/>
                     </svg>
                     Facebook
                 </button>
@@ -86,9 +82,7 @@
                 <a href="{{ asset('TermsofUse.html') }}">Conditions d’utilisation</a> |
                 <a href="{{ asset('PrivacyPolicy.html') }}">Politique de confidentialité</a>
             </div>
-
         </form>
-
     </div>
 
     <script src="{{ asset('script.js') }}"></script>

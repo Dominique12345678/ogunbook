@@ -1,261 +1,212 @@
-/* RESET */
+/* ==========================================================================
+   1. Variables de Couleur et Styles Globaux
+   ========================================================================== */
+
+/* Importation d'une police moderne */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+:root {
+    --darkgreen: #0F461F;
+    --lightgreen: #23AF20;
+    --lightgreen-hover: #1a8c18;
+    --white: #ffffff;
+    --black: #000000;
+    --red-error: #e74c3c;
+    --grey-text: #b8b8b8;
+    --grey-border: rgba(255, 255, 255, 0.2);
+    --glass-bg: rgba(15, 70, 31, 0.35);
+    --input-bg: rgba(0, 0, 0, 0.2);
+}
+
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(to right, #0f0c29, #302b63, #24243e);
-  color: #fff;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #0a2e14, #121212);
+    color: var(--white);
+    line-height: 1.6;
 }
 
-.login-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
+/* ==========================================================================
+   2. Conteneur Principal et Centrage
+   ========================================================================== */
+
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem 1rem;
 }
 
-.welcome h1 {
-  text-align: center;
-  font-size: 2rem;
-  margin-bottom: 2rem;
-  background: linear-gradient(90deg, #ff6ec4, #7873f5);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-  animation: fadeIn 1.2s ease;
+/* ==========================================================================
+   3. Carte de Connexion (Effet Glassmorphism)
+   ========================================================================== */
+
+.login-card {
+    width: 100%;
+    max-width: 450px;
+    background: var(--glass-bg);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--grey-border);
+    padding: 2.5rem;
 }
 
-/* Formulaire avec effet glassmorphism */
-.login-box {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
-  border-radius: 16px;
-  padding: 2rem;
-  width: 100%;
-  max-width: 420px;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
-  animation: slideIn 1s ease;
+/* ==========================================================================
+   4. En-tête de la Carte
+   ========================================================================== */
+
+.login-header {
+    text-align: center;
+    margin-bottom: 2rem;
 }
+
+.login-header h1 {
+    font-size: 2.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--white);
+}
+
+.login-header p {
+    color: var(--grey-text);
+    font-size: 1rem;
+}
+
+/* ==========================================================================
+   5. Formulaire et Champs
+   ========================================================================== */
 
 .login-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+    display: flex;
+    flex-direction: column;
 }
 
-/* Champs */
+.form-group {
+    margin-bottom: 1.25rem;
+    display: flex;
+    flex-direction: column;
+}
+
 .form-group label {
-  display: block;
-  margin-bottom: 0.4rem;
-  font-weight: 500;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--grey-text);
+    font-weight: 500;
 }
 
-input[type="text"],
-input[type="password"] {
-  width: 100%;
-  padding: 0.75rem;
-  border: none;
-  border-radius: 8px;
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #fff;
-  outline: none;
-  transition: all 0.3s ease;
+.form-group input {
+    width: 100%;
+    padding: 12px 15px;
+    background-color: var(--input-bg);
+    border: 1px solid var(--grey-border);
+    border-radius: 8px;
+    color: var(--white);
+    font-size: 1rem;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
 }
 
-input:focus {
-  background-color: rgba(255, 255, 255, 0.15);
-  border: 1px solid #fff;
+.form-group input:focus {
+    outline: none;
+    border-color: var(--lightgreen);
+    background-color: rgba(0, 0, 0, 0.3);
 }
 
-/* Mot de passe avec icône */
+/* --- Section spécifique au mot de passe --- */
 .password-wrapper {
-  position: relative;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-wrapper input {
+    padding-right: 40px; /* Espace pour l'icône */
 }
 
 .eye-icon {
-  position: absolute;
-  top: 50%;
-  right: 1rem;
-  transform: translateY(-50%);
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-  opacity: 0.8;
-  transition: opacity 0.2s ease;
+    position: absolute;
+    right: 15px;
+    color: var(--grey-text);
+    cursor: pointer;
+    transition: color 0.3s ease;
 }
 
 .eye-icon:hover {
-  opacity: 1;
+    color: var(--white);
 }
 
-/* Options */
+/* ==========================================================================
+   6. Options du Formulaire (Remember Me, Mdp oublié)
+   ========================================================================== */
+
 .form-options {
-  display: flex;
-  align-items: center;
-  font-size: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.remember-me label {
+    color: var(--grey-text);
+    cursor: pointer;
 }
 
 input[type="checkbox"] {
-  margin-right: 0.5rem;
-  accent-color: #ff6ec4;
+    accent-color: var(--lightgreen);
+    cursor: pointer;
 }
 
-/* Bouton principal */
-.btn-primary {
-  padding: 0.75rem;
-  border: none;
-  border-radius: 8px;
-  background: linear-gradient(90deg, #ff6ec4, #7873f5);
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+.forgot-password-link {
+    color: var(--lightgreen);
+    text-decoration: none;
 }
 
-.btn-primary:hover {
-  transform: scale(1.03);
-  box-shadow: 0 0 10px #7873f5;
+.forgot-password-link:hover {
+    text-decoration: underline;
 }
 
-/* Lien inscription */
-.signup-link {
-  text-align: center;
-  font-size: 0.9rem;
+/* ==========================================================================
+   7. Boutons (Principal et Sociaux)
+   ========================================================================== */
+
+.btn-submit {
+    padding: 12px;
+    background-color: var(--lightgreen);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 1.5rem;
 }
 
-.signup-link a {
-  color: #ffb6f2;
-  text-decoration: underline;
+.btn-submit:hover {
+    background-color: var(--lightgreen-hover);
 }
 
-/* Séparateur */
-.separator {
-  display: flex;
-  align-items: center;
-  text-align: center;
-  margin: 1rem 0;
-}
-
-.separator::before,
-.separator::after {
-  content: "";
-  flex: 1;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.separator span {
-  margin: 0 0.8rem;
-  font-size: 0.85rem;
-  opacity: 0.7;
-}
-
-/* Boutons sociaux */
-.social-login {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.social-login button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
-  padding: 0.6rem;
-  background-color: rgba(255, 255, 255, 0.1);
-  border: none;
-  color: #fff;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.social-login button.google-btn:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-}
-
-.social-login button.facebook-btn:hover {
-  background-color: #568afa33;
-}
-
-
-
-/* Footer */
-.form-footer {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.75rem;
-  margin-top: 1rem;
-}
-
-.form-footer a {
-  color: #bbb;
-  text-decoration: underline;
-}
-
-/* Animations */
-@keyframes slideIn {
-  from {
-    transform: translateY(40px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0 }
-  to { opacity: 1 }
-}
-
-.form-options-between {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.9rem;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.forgot-link {
-  color: #ffb6f2;
-  text-decoration: underline;
-  font-size: 0.85rem;
-  transition: color 0.3s ease;
-}
-
-.forgot-link:hover {
-  color: #fff;
-}
-
-/* Responsive */
-@media (max-width: 500px) {
-  .welcome h1 {
-    font-size: 1.5rem;
-  }
-
-  .login-box {
-    padding: 1.5rem;
-  }
-
-  .form-footer {
+.social-login-buttons {
+    display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    align-items: center;
-  }
+    gap: 1rem;
+    margin-bottom: 1.5rem;
 }
 
-
+.social-btn {
+    display: flex;
+    align-items: cent

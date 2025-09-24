@@ -15,7 +15,7 @@ class OgunbookController extends Controller
      */
     public function index()
     {
-        $idCreateur = Auth::guard('createur')->id(); 
+        $idCreateur = Auth::guard('createur')->id();
         $ogunbooks = Ogunbook::where('id_createur', $idCreateur)
             ->with('categorie')
             ->get();
@@ -54,24 +54,72 @@ class OgunbookController extends Controller
 
         // Création du livre
         $ogunbook = new Ogunbook();
-        $ogunbook->titre_ogoun = $request->nom_book; // ✅ Correction ici
-        $ogunbook->description_ogoun = $request->description; // ✅ Correction ici
+        $ogunbook->titre_ogoun = $request->nom_book;
+        $ogunbook->description_ogoun = $request->description;
         $ogunbook->nombre_de_chapitre = $request->nombre_de_chapitre;
-        $ogunbook->prix_ogoun = $request->prix_book; // ✅ Correction ici
+        $ogunbook->prix_ogoun = $request->prix_book;
         $ogunbook->id_categorie = $request->id_categorie;
         $ogunbook->id_createur = Auth::guard('createur')->id();
-        $ogunbook->photo_couverture_ogoun = $imagePath; // ✅ Correction ici
+        $ogunbook->photo_couverture_ogoun = $imagePath;
 
         $ogunbook->save();
 
-        return redirect()->route('ogunbooks.index')->with('success', 'Livre créé avec succès !');
-        
+        // ✅ CORRECTION: Redirection vers 'creator.ogunbooks.index'
+        return redirect()->route('creator.ogunbooks.index')->with('success', 'Livre créé avec succès !');
     }
+
     public function destroy($id)
     {
         $ogunbook = Ogunbook::findOrFail($id);
+        
+        // Supprimer l'image associée si elle existe
+        if ($ogunbook->photo_couverture_ogoun) {
+            Storage::disk('public')->delete($ogunbook->photo_couverture_ogoun);
+        }
+
         $ogunbook->delete();
 
-        return redirect()->route('ogunbooks.index')->with('success', 'Livre supprimé avec succès.');
+        // ✅ CORRECTION: Redirection vers 'creator.ogunbooks.index'
+        return redirect()->route('creator.ogunbooks.index')->with('success', 'Livre supprimé avec succès.');
+    }
+
+    // N'oubliez pas d'ajouter les méthodes 'edit' et 'update' si elles ne sont pas déjà là
+    // pour que la ressource soit complète.
+    public function edit(Ogunbook $ogunbook)
+    {
+        $categories = Categorie::all();
+        return view('ogunbook.edit', compact('ogunbook', 'categories'));
+    }
+
+    public function update(Request $request, Ogunbook $ogunbook)
+    {
+        $request->validate([
+            'nom_book' => 'required|string|max:255',
+            'description' => 'required|string',
+            'nombre_de_chapitre' => 'required|integer|min:0',
+            'prix_book' => 'required|numeric|min:0',
+            'id_categorie' => 'required|exists:categories,id_categorie',
+            'image_book' => 'nullable|image|max:2048',
+        ]);
+
+        $imagePath = $ogunbook->photo_couverture_ogoun;
+        if ($request->hasFile('image_book')) {
+            if ($imagePath) {
+                Storage::disk('public')->delete($imagePath);
+            }
+            $imagePath = $request->file('image_book')->store('books', 'public');
+        }
+
+        $ogunbook->update([
+            'titre_ogoun' => $request->nom_book,
+            'description_ogoun' => $request->description,
+            'nombre_de_chapitre' => $request->nombre_de_chapitre,
+            'prix_ogoun' => $request->prix_book,
+            'id_categorie' => $request->id_categorie,
+            'photo_couverture_ogoun' => $imagePath,
+        ]);
+
+        // ✅ CORRECTION: Redirection vers 'creator.ogunbooks.index'
+        return redirect()->route('creator.ogunbooks.index')->with('success', 'Livre mis à jour avec succès !');
     }
 }
